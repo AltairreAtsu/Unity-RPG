@@ -11,35 +11,39 @@ public class PlayerMovement : MonoBehaviour
 
 	private bool isInDirectMode = false; // TODO consider making static later
 
+	private AICharacterControl aiCharacter;
 	private Transform mainCamera;
 	private ThirdPersonCharacter m_Character;
     private CameraRaycaster cameraRaycaster;
+
+	private Transform currentWalkTarget;
+
+	// TODO Remove(?)
     private Vector3 currentDestination, clickTarget;
 
     private void Start()
     {
-        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        m_Character = GetComponent<ThirdPersonCharacter>();
-        currentDestination = transform.position;
-		mainCamera = Camera.main.transform;
+		GetDependencies();
+
+		cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+
+		CreateWalkTarget();
     }
 
-    private void FixedUpdate()
+	private void GetDependencies()
 	{
-		if(Input.GetKeyDown(KeyCode.G)) // TODO allow player to remap later
-		{
-			isInDirectMode = !isInDirectMode;
-			currentDestination = transform.position;
-		}
+		aiCharacter = GetComponent<AICharacterControl>();
+		m_Character = GetComponent<ThirdPersonCharacter>();
 
-		if (isInDirectMode)
-		{
-			ProcessDirectMovement();
-		}
-		else
-		{
-			ProcessClickToMove();
-		}
+		mainCamera = Camera.main.transform;
+		cameraRaycaster = mainCamera.GetComponent<CameraRaycaster>();
+	}
+
+	private void CreateWalkTarget()
+	{
+		var walkTargetObject = new GameObject("CurrentWalkTarget");
+		currentWalkTarget = walkTargetObject.transform;
+		currentDestination = currentWalkTarget.position;
 	}
 
 	private void ProcessDirectMovement()
@@ -54,40 +58,17 @@ public class PlayerMovement : MonoBehaviour
 		m_Character.Move(m_Move, false, false);
 	}
 
-	private void ProcessClickToMove()
+	private void OnMouseClick(RaycastHit hit, int layerHit)
 	{
-		if ((Input.GetMouseButton(0)) && (cameraRaycaster.layerHit == Utils.Layer.Walkable))
+		if (layerHit == 10)
 		{
-			clickTarget = cameraRaycaster.hit.point;
-			currentDestination = ShortDestination(clickTarget, walkStopRadius);
+			aiCharacter.SetTarget(hit.transform);
 		}
-		else if ((Input.GetMouseButton(0)) && (cameraRaycaster.layerHit == Utils.Layer.Enemy))
+		else if (layerHit == 9)
 		{
-			clickTarget = cameraRaycaster.hit.point;
-			currentDestination = ShortDestination(clickTarget, attackMoveStopRadius);
+			currentWalkTarget.position = hit.point;
+			aiCharacter.SetTarget(currentWalkTarget);
 		}
-
-		WalkToDestination();
-	}
-
-	private void WalkToDestination()
-	{
-		var distanceToTarget = Vector3.Distance(transform.position, currentDestination);
-
-		if (distanceToTarget >= postionalMarginOfError)
-		{
-			m_Character.Move(currentDestination - transform.position, false, false);
-		}
-		else
-		{
-			m_Character.Move(Vector3.zero, false, false);
-		}
-	}
-
-	private Vector3 ShortDestination(Vector3 destination, float shortening)
-	{
-		Vector3 reductionVector = (destination - transform.position).normalized * shortening;
-		return destination - reductionVector;
 	}
 
 	private void OnDrawGizmos()

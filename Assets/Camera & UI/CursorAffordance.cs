@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CameraRaycaster))]
-public class CursorUtil : MonoBehaviour
+public class CursorAffordance : MonoBehaviour
 {
 	[SerializeField] private Texture2D walkCursor = null;
 	[SerializeField] private Texture2D enemyCursor = null;
@@ -16,17 +16,17 @@ public class CursorUtil : MonoBehaviour
 	private void Start ()
 	{
 		cameraRaycaster = GetComponent<CameraRaycaster>();
-		cameraRaycaster.onLayerChange += OnLayerChanged;
+		cameraRaycaster.notifyLayerChangeObservers += OnLayerChanged;
 	}
 
-	private void OnLayerChanged (Utils.Layer layer)
+	private void OnLayerChanged (int layer)
 	{
 		switch (layer)
 		{
-			case Utils.Layer.Walkable:
+			case 9:
 				Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
 				break;
-			case Utils.Layer.Enemy:
+			case 10:
 				Cursor.SetCursor(enemyCursor, cursorHotSpot, CursorMode.Auto);
 				break;
 			default:
