@@ -838,6 +838,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1570696537728952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4317150064444718}
+  m_Layer: 10
+  m_Name: Projectile Socket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1575875245656260
 GameObject:
   m_ObjectHideFlags: 1
@@ -1664,6 +1679,19 @@ Transform:
   m_Father: {fileID: 4706996177109142}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4317150064444718
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570696537728952}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.807, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4739659580273636}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4328145552767408
 Transform:
   m_ObjectHideFlags: 1
@@ -2200,13 +2228,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1626642847127780}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.66, y: -0.5, z: 4.11}
+  m_LocalPosition: {x: -1.7857208, y: 0, z: 2.5115356}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4058558741642326}
   - {fileID: 4049400493384712}
   - {fileID: 4118389683326812}
   - {fileID: 4754758143704488}
+  - {fileID: 4317150064444718}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2550,6 +2579,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealthPoints: 10
   currentHealth: 10
+  attackRadius: 5
+  chaseRadius: 20
+  delayBetweenShots: 0.5
+  damagePerShot: 5
+  projectileSocket: {fileID: 1570696537728952}
+  projectileToUse: {fileID: 1615473026529740, guid: 093a0dbc41fdb9e4386785d5bbd6ef66,
+    type: 2}
+  aimOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &114697189492559682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2777,7 +2814,7 @@ NavMeshAgent:
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.2
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

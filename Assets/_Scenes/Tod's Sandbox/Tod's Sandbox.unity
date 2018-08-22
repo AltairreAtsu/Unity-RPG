@@ -683,16 +683,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114316075295077178, guid: 4504f04a98ddb874b8ba77f0485274f2,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 195096896365667020, guid: 4504f04a98ddb874b8ba77f0485274f2,
-        type: 2}
-      propertyPath: m_StoppingDistance
-      value: 1.3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4504f04a98ddb874b8ba77f0485274f2, type: 2}
   m_IsPrefabAsset: 0
@@ -916,11 +906,6 @@ Prefab:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 377147013}
-    - target: {fileID: 195863340251014522, guid: a10503e44e7b540419e7cbab372424d7,
-        type: 2}
-      propertyPath: m_StoppingDistance
-      value: 1.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a10503e44e7b540419e7cbab372424d7, type: 2}
   m_IsPrefabAsset: 0
