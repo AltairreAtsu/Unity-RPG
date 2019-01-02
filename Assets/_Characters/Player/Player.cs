@@ -6,6 +6,7 @@ using UnityEngine.Assertions;
 using RPG.CameraUI;
 using RPG.Weapons;
 using RPG.Core;
+using System;
 
 namespace RPG.Characters
 {
@@ -19,8 +20,9 @@ namespace RPG.Characters
 		[SerializeField] private float damageDelay = 0.5f;
 		[SerializeField] private float attackRange = 0.5f;
 
-
 		[SerializeField] private Weapon heldWeapon;
+
+		[SerializeField] private AnimatorOverrideController animatorOverrideController;
 
 		private float lastDamageTime = 0f;
 
@@ -31,6 +33,14 @@ namespace RPG.Characters
 			Camera.main.GetComponent<CameraRaycaster>().notifyMouseClickObservers += OnMouseClick;
 
 			PutWeaponInHand();
+			OverrideAnimatorController();
+		}
+
+		private void OverrideAnimatorController()
+		{
+			var animator = GetComponent<Animator>();
+			animator.runtimeAnimatorController = animatorOverrideController;
+			animatorOverrideController["DEFUALT_ATTACK"] = heldWeapon.GetAnimation();
 		}
 
 		private void PutWeaponInHand()

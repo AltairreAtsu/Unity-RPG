@@ -19,5 +19,17 @@ namespace RPG.Weapons {
 		{
 			return weaponPrefab;
 		}
+
+		public AnimationClip GetAnimation()
+		{
+			// Prevents errors from being thrown due to null animation event recievers.
+			RemoveAnimationEvents();
+			return attackAnimation;
+		}
+
+		private void RemoveAnimationEvents()
+		{
+			attackAnimation.events = new AnimationEvent[0];
+		}
 	}
 }

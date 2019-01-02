@@ -18952,6 +18952,24 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
+        type: 2}
+      propertyPath: heldWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 5fdadd28dccd1994fa65b30c08a71e04,
+        type: 2}
+    - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
+        type: 2}
+      propertyPath: animatorOverrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123,
+        type: 2}
+    - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
+        type: 2}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4504f04a98ddb874b8ba77f0485274f2, type: 2}
   m_IsPrefabAsset: 0
@@ -27362,7 +27380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2107577036
 Transform:
   m_ObjectHideFlags: 0
