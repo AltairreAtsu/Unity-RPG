@@ -2,46 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonCrawlerCamera : MonoBehaviour {
-	[SerializeField] private Transform target = null;
+namespace RPG.CameraUI
+{
+	public class DungeonCrawlerCamera : MonoBehaviour {
+		[SerializeField] private Transform target = null;
 
-	[SerializeField] private float dampening = 1f;
+		[SerializeField] private float dampening = 1f;
 
-	[SerializeField] private bool alwaysLookAtPlayer = false;
-	[SerializeField] private bool useDamping = true;
+		[SerializeField] private bool alwaysLookAtPlayer = false;
+		[SerializeField] private bool useDamping = true;
 
-	private Vector3 offset = Vector3.zero;
+		private Vector3 offset = Vector3.zero;
 
-	private void Start()
-	{
-		if (target == null)
+		private void Start()
 		{
-			target = GameObject.FindWithTag("Player").transform;
-			if (!target)
+			if (target == null)
 			{
-				Debug.LogError("Camera Target is set to null and could not find object tagged as player!");
+				target = GameObject.FindWithTag("Player").transform;
+				if (!target)
+				{
+					Debug.LogError("Camera Target is set to null and could not find object tagged as player!");
+				}
 			}
+
+			offset = transform.position - target.position;
 		}
 
-		offset = transform.position - target.position;
-	}
-
-	private void LateUpdate ()
-	{
-		Vector3 desiredPosition = target.transform.position + offset;
-
-		if (useDamping)
+		private void LateUpdate ()
 		{
-			transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * dampening);
-		}
-		else
-		{
-			transform.position = desiredPosition;
-		}
+			Vector3 desiredPosition = target.transform.position + offset;
 
-		if (alwaysLookAtPlayer)
-		{
-			transform.LookAt(target);
+			if (useDamping)
+			{
+				transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * dampening);
+			}
+			else
+			{
+				transform.position = desiredPosition;
+			}
+
+			if (alwaysLookAtPlayer)
+			{
+				transform.LookAt(target);
+			}
 		}
 	}
 }
