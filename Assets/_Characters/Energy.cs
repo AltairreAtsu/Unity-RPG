@@ -27,9 +27,10 @@ namespace RPG.Characters
 			EnergyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
 		}
 
-		private void OnRightClick()
+		private void OnRightClick(RaycastHit raycastHit, int layerHit)
 		{
 			currentEnergy -= energyPerAttack;
+			currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
 		}
 	}
 
