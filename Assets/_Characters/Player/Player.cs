@@ -29,7 +29,7 @@ namespace RPG.Characters
 
 		private void Start()
 		{
-			Camera.main.GetComponent<CameraRaycaster>().notifyMouseClickObservers += OnMouseClick;
+			Camera.main.GetComponent<CameraRaycaster>().notifyEnemyClickObsevers += OnEnemyHit;
 			animator = GetComponent<Animator>();
 
 			PutWeaponInHand();
@@ -99,16 +99,14 @@ namespace RPG.Characters
 			currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealthPoints);
 		}
 
-		private void OnMouseClick(RaycastHit hit, int layerHit)
+		private void OnEnemyHit(Enemy enemy)
 		{
-			if (layerHit != enemyLayer) { return; }
-
-			var target = hit.collider.GetComponent<IDamagable>();
+			var target = enemy.GetComponent<IDamagable>();
 			if( target == null ) { return; }
 
-			if (CanAttack(hit))
+			if (CanAttack(enemy.transform.position))
 			{
-				Attack(target, hit.collider.gameObject);
+				Attack(target, enemy.gameObject);
 			}
 		}
 
@@ -121,16 +119,16 @@ namespace RPG.Characters
 			lastDamageTime = Time.time;
 		}
 
-		private bool CanAttack(RaycastHit hit)
+		private bool CanAttack(Vector3 position)
 		{	
 			var AttackCooldown = (Time.time - lastDamageTime < heldWeapon.GetAttackCooldown());
 
-			return (!AttackCooldown) && (InRange(hit));
+			return (!AttackCooldown) && (InRange(position));
 		}
 
-		public bool InRange(RaycastHit hit)
+		public bool InRange(Vector3 position)
 		{
-			var distanceToPlayer = Vector3.Distance(transform.position, hit.transform.position);
+			var distanceToPlayer = Vector3.Distance(transform.position, position);
 			return distanceToPlayer <= heldWeapon.GetAttackRange();
 		}
 	}

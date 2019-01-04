@@ -22,7 +22,8 @@ namespace RPG.Characters
 		{
 			GetDependencies();
 
-			cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+			cameraRaycaster.notifyWalkableClickObservers += OnMouseClickWalkable;
+			cameraRaycaster.notifyEnemyClickObsevers += OnMouseClickEnemy;
 
 			CreateWalkTarget();
 		}
@@ -55,19 +56,17 @@ namespace RPG.Characters
 			thirdPersonCharacter.Move(m_Move);
 		}
 
-		private void OnMouseClick(RaycastHit hit, int layerHit)
+		private void OnMouseClickWalkable(Vector3 point)
 		{
-			if (layerHit == 10)
+			currentWalkTarget.position = point;
+			aiCharacter.SetTarget(currentWalkTarget);
+		}
+
+		private void OnMouseClickEnemy(Enemy enemy)
+		{
+			if (!player.InRange(enemy.transform.position))
 			{
-				// Hit Enemy
-				if (!player.InRange(hit)){
-					aiCharacter.SetTarget(hit.transform);
-				}
-			}
-			else if (layerHit == 9)
-			{
-				currentWalkTarget.position = hit.point;
-				aiCharacter.SetTarget(currentWalkTarget);
+				aiCharacter.SetTarget(enemy.transform);
 			}
 		}
 	}

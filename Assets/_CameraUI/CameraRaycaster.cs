@@ -1,92 +1,130 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Linq;
-using System.Collections.Generic;
+
+using RPG.Characters;
 
 namespace RPG.CameraUI { 
 	public class CameraRaycaster : MonoBehaviour
 	{
-		// INSPECTOR PROPERTIES RENDERED BY CUSTOM EDITOR SCRIPT
-		[SerializeField] int[] layerPriorities;
+		[SerializeField] private Texture2D walkCursor = null;
+		[SerializeField] private Texture2D enemyCursor = null;
+		[SerializeField] private Vector2 cursorHotSpot = new Vector2(96, 96);
 
-		float maxRaycastDepth = 100f; // Hard coded value
-		int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
-
-		// Setup delegates for broadcasting layer changes to other classes
-		public delegate void OnCursorLayerChange(int newLayer); // declare new delegate type
-		public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
+		private float maxRaycastDepth = 100f; // Hard coded value
+		private int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
 		public delegate void OnRightClick (RaycastHit raycastHit, int layerHit);
 		public event OnRightClick notifyRightClickObservers;
 
-		public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
-		public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
+		public delegate void OnClickWalkable(Vector3 position); // declare new delegate type
+		public event OnClickWalkable notifyWalkableClickObservers; // instantiate an observer set
 
+		public delegate void OnClickEnemy(Enemy enemy);
+		public event OnClickEnemy notifyEnemyClickObsevers;
 
-		void Update()
+		private bool currentlyOverEnemy = false;
+		private static int WALKABLE_LAYER = 9;
+
+		private void Start()
+		{
+			Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
+		}
+
+		private void Update()
 		{
 			// Check if pointer is over an interactable UI element
 			if (EventSystem.current.IsPointerOverGameObject ())
 			{
-				NotifyObserersIfLayerChanged (5);
-				return; // Stop looking for other objects
+				return; // Do Nothing
 			}
 
 			// Raycast to max depth, every frame as things can move under mouse
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] raycastHits = Physics.RaycastAll (ray, maxRaycastDepth);
 
-			RaycastHit? priorityHit = FindTopPriorityHit(raycastHits);
-			if (!priorityHit.HasValue) // if hit no priority object
-			{
-				NotifyObserersIfLayerChanged (0); // broadcast default layer
-				return;
-			}
+			var rayHit = HitPriorityTarget(raycastHits);
 
-			// Notify delegates of layer change
-			var layerHit = priorityHit.Value.collider.gameObject.layer;
-			NotifyObserersIfLayerChanged(layerHit);
-		
-			// Notify delegates of highest priority game object under mouse when clicked
-			if (Input.GetMouseButton (0))
-			{
-				notifyMouseClickObservers (priorityHit.Value, layerHit);
-			}
-			if (Input.GetMouseButtonDown(1))    {
-				notifyRightClickObservers(priorityHit.Value, layerHit);
-			}
+			UpdateCursorDisplay(rayHit);
+			HandleMouseInput(rayHit);
 		}
 
-		void NotifyObserersIfLayerChanged(int newLayer)
+		private RayHit HitPriorityTarget(RaycastHit[] raycastHits)
 		{
-			if (newLayer != topPriorityLayerLastFrame)
-			{
-				topPriorityLayerLastFrame = newLayer;
-				notifyLayerChangeObservers (newLayer);
-			}
-		}
+			var rayHit = new RayHit(null, null, false);
 
-		RaycastHit? FindTopPriorityHit (RaycastHit[] raycastHits)
-		{
-			// Form list of layer numbers hit
-			List<int> layersOfHitColliders = new List<int> ();
 			foreach (RaycastHit hit in raycastHits)
 			{
-				layersOfHitColliders.Add (hit.collider.gameObject.layer);
-			}
+				// Layer Priorities
+				// Highest Priority returns right away
+				var enemy = hit.collider.GetComponent<Enemy>();
 
-			// Step through layers in order of priority looking for a gameobject with that layer
-			foreach (int layer in layerPriorities)
-			{
-				foreach (RaycastHit hit in raycastHits)
+				if (enemy != null)
 				{
-					if (hit.collider.gameObject.layer == layer)
-					{
-						return hit; // stop looking
-					}
+					rayHit.hit = hit;
+					rayHit.enemyHit = enemy;
+					return rayHit;
+				}
+				
+				// Lowest Priority only sets a flag
+				if (hit.collider.gameObject.layer == WALKABLE_LAYER)
+				{
+					rayHit.hit = hit;
+					rayHit.hitWalkable = true;
 				}
 			}
-			return null; // because cannot use GameObject? nullable
+			return rayHit;
+		}
+
+		private void UpdateCursorDisplay(RayHit rayHit)
+		{
+			if (rayHit.enemyHit != null && !currentlyOverEnemy)
+			{
+				currentlyOverEnemy = true;
+				Cursor.SetCursor(enemyCursor, cursorHotSpot, CursorMode.Auto);
+			}
+			else if (rayHit.enemyHit == null && currentlyOverEnemy)
+			{
+				currentlyOverEnemy = false;
+				Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
+			}
+		}
+
+		private void HandleMouseInput(RayHit rayHit)
+		{
+			// Notify delegates of highest priority game object under mouse when clicked
+			if (Input.GetMouseButton(0))
+			{
+				if (rayHit.enemyHit != null)
+				{
+					notifyEnemyClickObsevers(rayHit.enemyHit);
+					return;
+				}
+				if (rayHit.hitWalkable)
+				{
+					RaycastHit hit = (RaycastHit)rayHit.hit;
+					notifyWalkableClickObservers(hit.point);
+					return;
+				}
+			}
+			if (Input.GetMouseButtonDown(1))
+			{
+				RaycastHit hit = (RaycastHit)rayHit.hit;
+				notifyRightClickObservers(hit, hit.collider.gameObject.layer);
+			}
+		}
+	}
+
+	public struct RayHit
+	{
+		public RaycastHit? hit;
+		public Enemy enemyHit;
+		public bool hitWalkable;
+
+		public RayHit(RaycastHit? hit, Enemy enemyHit, bool hitWalkable)
+		{
+			this.hit = hit;
+			this.enemyHit = enemyHit;
+			this.hitWalkable = hitWalkable;
 		}
 	}
 }
