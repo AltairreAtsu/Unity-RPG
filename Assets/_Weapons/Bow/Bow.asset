@@ -9,12 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8ed084c8c40e5946a2bf9b81ac3f29d, type: 3}
-  m_Name: Dagger
+  m_Name: Bow
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 1294703482714418, guid: 94794573159627a4e9d95a2657313b64,
+  weaponPrefab: {fileID: 1073658129757958, guid: 78ec718d577239649abc76fdb75fe7bc,
     type: 2}
-  weaponGrip: {fileID: 4606222750357070, guid: 6cbf882f7c113044481ed731881869ce, type: 2}
-  weaponHand: 1
-  attackAnimation: {fileID: 7400000, guid: d82669b37833c5f4db716b82428a5ad6, type: 3}
-  attackCooldown: 0.9
-  attackRange: 2
+  weaponGrip: {fileID: 4992259335071670, guid: 5f9e57e09f02a09488be85ef8d74b239, type: 2}
+  attackAnimation: {fileID: 7400000, guid: 24d693751e9fd0b42ba8f9595d8b5f5e, type: 3}
+  attackCooldown: 1
+  attackRange: 10

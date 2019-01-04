@@ -383,6 +383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4836095694948738}
+  - component: {fileID: 114749732867113906}
   m_Layer: 11
   m_Name: L_wrist
   m_TagString: Untagged
@@ -2114,9 +2115,9 @@ MonoBehaviour:
   currentHealth: 10
   enemyLayer: 10
   damagePerShot: 3
-  damageDelay: 0.5
-  attackRange: 1.5
-  heldWeapon: {fileID: 11400000, guid: 9a23c69b01aab9643b84cb70493fa099, type: 2}
+  heldWeapon: {fileID: 11400000, guid: 277a598097a65a442b49fe37b3a1aec9, type: 2}
+  animatorOverrideController: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123,
+    type: 2}
 --- !u!114 &114316075295077178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2151,6 +2152,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487a706ae5eb55c49b0447aaf451bf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Dominant: 1
+--- !u!114 &114749732867113906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1387596371256120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487a706ae5eb55c49b0447aaf451bf80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dominant: 0
 --- !u!114 &114920403498187400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2174,7 +2188,7 @@ CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630556238628396}
-  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3

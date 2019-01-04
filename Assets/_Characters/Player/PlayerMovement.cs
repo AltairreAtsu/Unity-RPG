@@ -14,6 +14,7 @@ namespace RPG.Characters
 		private Transform mainCamera = null;
 		private ThirdPersonCharacter thirdPersonCharacter = null;
 		private CameraRaycaster cameraRaycaster = null;
+		private Player player;
 
 		private Transform currentWalkTarget;
 
@@ -30,6 +31,7 @@ namespace RPG.Characters
 		{
 			aiCharacter = GetComponent<AICharacterControl>();
 			thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
+			player = GetComponent<Player>();
 
 			mainCamera = Camera.main.transform;
 			cameraRaycaster = mainCamera.GetComponent<CameraRaycaster>();
@@ -57,7 +59,10 @@ namespace RPG.Characters
 		{
 			if (layerHit == 10)
 			{
-				aiCharacter.SetTarget(hit.transform);
+				// Hit Enemy
+				if (!player.InRange(hit)){
+					aiCharacter.SetTarget(hit.transform);
+				}
 			}
 			else if (layerHit == 9)
 			{
