@@ -22,8 +22,8 @@ namespace RPG.Characters
 		{
 			GetDependencies();
 
-			cameraRaycaster.notifyWalkableClickObservers += OnMouseClickWalkable;
-			cameraRaycaster.notifyEnemyClickObsevers += OnMouseClickEnemy;
+			cameraRaycaster.onMouseOverWalkable += OnMouseOverWalkable;
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 
 			CreateWalkTarget();
 		}
@@ -56,17 +56,27 @@ namespace RPG.Characters
 			thirdPersonCharacter.Move(m_Move);
 		}
 
-		private void OnMouseClickWalkable(Vector3 point)
+		private void OnMouseOverWalkable(Vector3 point)
 		{
-			currentWalkTarget.position = point;
-			aiCharacter.SetTarget(currentWalkTarget);
+			if (Input.GetMouseButtonDown(0))
+			{
+				currentWalkTarget.position = point;
+				aiCharacter.SetTarget(currentWalkTarget);
+			}
 		}
 
-		private void OnMouseClickEnemy(Enemy enemy)
+		private void OnMouseOverEnemy(Enemy enemy)
 		{
-			if (!player.InRange(enemy.transform.position))
+			if (Input.GetMouseButtonDown(0))
 			{
-				aiCharacter.SetTarget(enemy.transform);
+				if (!player.InRange(enemy.transform.position))
+				{
+					aiCharacter.SetTarget(enemy.transform);
+				}
+				else
+				{
+					player.TryAttack(enemy);
+				}
 			}
 		}
 	}

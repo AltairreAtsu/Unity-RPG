@@ -29,7 +29,6 @@ namespace RPG.Characters
 
 		private void Start()
 		{
-			Camera.main.GetComponent<CameraRaycaster>().notifyEnemyClickObsevers += OnEnemyHit;
 			animator = GetComponent<Animator>();
 
 			PutWeaponInHand();
@@ -99,10 +98,10 @@ namespace RPG.Characters
 			currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealthPoints);
 		}
 
-		private void OnEnemyHit(Enemy enemy)
+		public void TryAttack (Enemy enemy)
 		{
 			var target = enemy.GetComponent<IDamagable>();
-			if( target == null ) { return; }
+			if (target == null) { return; }
 
 			if (CanAttack(enemy.transform.position))
 			{

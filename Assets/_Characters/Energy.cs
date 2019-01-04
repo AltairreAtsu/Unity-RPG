@@ -18,7 +18,7 @@ namespace RPG.Characters
 		private void Start()
 		{
 			currentEnergy = maxEnergy;
-			FindObjectOfType<CameraRaycaster>().notifyRightClickObservers += OnRightClick;
+			FindObjectOfType<CameraRaycaster>().onMouseOverEnemy += OnRightClick;
 		}
 
 		private void Update()
@@ -27,10 +27,13 @@ namespace RPG.Characters
 			EnergyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
 		}
 
-		private void OnRightClick(RaycastHit raycastHit, int layerHit)
+		private void OnRightClick(Enemy enemy)
 		{
-			currentEnergy -= energyPerAttack;
-			currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
+			if (Input.GetMouseButtonDown(1))
+			{
+				currentEnergy -= energyPerAttack;
+				currentEnergy = Mathf.Clamp(currentEnergy, 0, maxEnergy);
+			}
 		}
 	}
 

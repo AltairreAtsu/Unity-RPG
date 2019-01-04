@@ -13,14 +13,11 @@ namespace RPG.CameraUI {
 		private float maxRaycastDepth = 100f; // Hard coded value
 		private int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
-		public delegate void OnRightClick (RaycastHit raycastHit, int layerHit);
-		public event OnRightClick notifyRightClickObservers;
+		public delegate void OnMouseOverWalkable(Vector3 position); // declare new delegate type
+		public event OnMouseOverWalkable onMouseOverWalkable; // instantiate an observer set
 
-		public delegate void OnClickWalkable(Vector3 position); // declare new delegate type
-		public event OnClickWalkable notifyWalkableClickObservers; // instantiate an observer set
-
-		public delegate void OnClickEnemy(Enemy enemy);
-		public event OnClickEnemy notifyEnemyClickObsevers;
+		public delegate void OnMouseOverEnemy(Enemy enemy);
+		public event OnMouseOverEnemy onMouseOverEnemy;
 
 		private bool currentlyOverEnemy = false;
 		private static int WALKABLE_LAYER = 9;
@@ -39,17 +36,16 @@ namespace RPG.CameraUI {
 			}
 
 			// Raycast to max depth, every frame as things can move under mouse
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit[] raycastHits = Physics.RaycastAll (ray, maxRaycastDepth);
-
-			var rayHit = HitPriorityTarget(raycastHits);
-
+			var rayHit = HitPriorityTarget();
 			UpdateCursorDisplay(rayHit);
-			HandleMouseInput(rayHit);
+			NotifyObservers(rayHit);
 		}
 
-		private RayHit HitPriorityTarget(RaycastHit[] raycastHits)
+		private RayHit HitPriorityTarget()
 		{
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxRaycastDepth);
+
 			var rayHit = new RayHit(null, null, false);
 
 			foreach (RaycastHit hit in raycastHits)
@@ -89,29 +85,21 @@ namespace RPG.CameraUI {
 			}
 		}
 
-		private void HandleMouseInput(RayHit rayHit)
+		private void NotifyObservers(RayHit rayHit)
 		{
-			// Notify delegates of highest priority game object under mouse when clicked
-			if (Input.GetMouseButton(0))
+			if (rayHit.enemyHit != null)
 			{
-				if (rayHit.enemyHit != null)
-				{
-					notifyEnemyClickObsevers(rayHit.enemyHit);
-					return;
-				}
-				if (rayHit.hitWalkable)
-				{
-					RaycastHit hit = (RaycastHit)rayHit.hit;
-					notifyWalkableClickObservers(hit.point);
-					return;
-				}
+				onMouseOverEnemy(rayHit.enemyHit);
+				return;
 			}
-			if (Input.GetMouseButtonDown(1))
+			if (rayHit.hitWalkable)
 			{
-				RaycastHit hit = (RaycastHit)rayHit.hit;
-				notifyRightClickObservers(hit, hit.collider.gameObject.layer);
+				var hit = (RaycastHit)rayHit.hit;
+				onMouseOverWalkable(hit.point);
+				return;
 			}
 		}
+
 	}
 
 	public struct RayHit
