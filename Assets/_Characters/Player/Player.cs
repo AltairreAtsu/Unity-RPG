@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 using RPG.CameraUI;
 using RPG.Weapons;
@@ -18,16 +19,25 @@ namespace RPG.Characters
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
 		[SerializeField] private SpecialAbilityConfig abilityOne = null;
+		[Header("Death Variables")]
+		[SerializeField] float deathDelay = 3f;
+		[SerializeField] AudioClipArray deathSoundClips = null;
+		[SerializeField] AudioClipArray hurtSoundClips = null;
 
-		private Energy energy;
 		private Animator animator;
+		private AudioSource audioSource;
+		private Energy energy;
 
+		private Coroutine deathCorotune;
+
+		private bool isAlive = true;
 		private float lastDamageTime = 0f;
 		public float healthAsPercentage { get { return currentHealth / maxHealthPoints; } }
 
 		private void Start()
 		{
 			animator = GetComponent<Animator>();
+			audioSource = GetComponent<AudioSource>();
 			energy = GetComponent<Energy>();
 
 			PutWeaponInHand();
@@ -72,6 +82,8 @@ namespace RPG.Characters
 			var weapon = Instantiate(heldWeapon.GetWeaponPrefab(), weaponSocket);
 			weapon.transform.localPosition = heldWeapon.getWeaponGrip().transform.position;
 			weapon.transform.localRotation = heldWeapon.getWeaponGrip().transform.rotation;
+
+			animator.SetFloat("AttackAnimationSpeedMultiplier", heldWeapon.GetAttackSpeedMultiplier());
 		}
 
 		private HandIndicator[] GetHands()
@@ -112,6 +124,24 @@ namespace RPG.Characters
 		public void TakeDamage(float damage)
 		{
 			currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealthPoints);
+			if (currentHealth <= 0)
+			{
+				if (deathCorotune != null) { return; }
+				deathCorotune = StartCoroutine(KillPlayer());
+			}
+			else
+			{
+				hurtSoundClips.PlayClip(audioSource);
+			}
+		}
+
+		private IEnumerator KillPlayer()
+		{
+			isAlive = false;
+			deathSoundClips.PlayClip(audioSource);
+			animator.SetTrigger("Die");
+			yield return new WaitForSecondsRealtime(deathDelay);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
 		public void TryAttack (Enemy enemy)
@@ -132,6 +162,7 @@ namespace RPG.Characters
 			animator.SetTrigger("Attack");
 			target.TakeDamage(baseDamage);
 			lastDamageTime = Time.time;
+			animatorOverrideController["DEFUALT_ATTACK"] = heldWeapon.GetAnimation();
 		}
 
 		private bool CanAttack(Vector3 position)
@@ -150,6 +181,11 @@ namespace RPG.Characters
 		public Transform GetTransform()
 		{
 			return transform;
+		}
+
+		public bool IsAlive()
+		{
+			return isAlive;
 		}
 	}
 }

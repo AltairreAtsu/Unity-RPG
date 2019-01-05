@@ -24,7 +24,7 @@ namespace RPG.Characters {
 		private bool isAttacking = false;
 		[SerializeField] private Vector3 aimOffset = new Vector3(0, 1, 0);
 
-		private Transform playerTransform;
+		private Player player;
 
 		public float healthAsPercentage
 		{
@@ -44,18 +44,18 @@ namespace RPG.Characters {
 		{
 			aiCharacter = GetComponent<AICharacterControl>();
 
-			playerTransform = GameObject.FindWithTag("Player").transform;
+			player= GameObject.FindObjectOfType<Player>();
 		}
 
 		private void Update()
 		{
-			float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-			if (distanceToPlayer <= attackRadius && !isAttacking)
+			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+			if (player.IsAlive() && distanceToPlayer <= attackRadius && !isAttacking)
 			{
 				projectileSpawningCoroutine = StartCoroutine(SpawnProjectiles());
 				isAttacking = true;
 			}
-			else if(distanceToPlayer > attackRadius && isAttacking)
+			else if(!player.IsAlive() && isAttacking || distanceToPlayer > attackRadius && isAttacking)
 			{
 				StopCoroutine(projectileSpawningCoroutine);
 				isAttacking = false;
@@ -63,7 +63,7 @@ namespace RPG.Characters {
 
 			if (distanceToPlayer <= chaseRadius)
 			{
-				aiCharacter.SetTarget(playerTransform);
+				aiCharacter.SetTarget(player.transform);
 			}
 			else
 			{
@@ -79,7 +79,7 @@ namespace RPG.Characters {
 				.GetComponent<Projectile>();
 				projectile.SetShooter(gameObject);
 				projectile.SetDamage(damagePerShot);
-				projectile.Launch(playerTransform.position + aimOffset);
+				projectile.Launch(player.transform.position + aimOffset);
 
 				yield return new WaitForSeconds(delayBetweenShots);
 			}

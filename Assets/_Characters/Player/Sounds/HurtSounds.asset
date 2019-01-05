@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d5f305f31fe154ba9aaafa76634314, type: 3}
+  m_Name: HurtSounds
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: d3f94a8d60180404bb38ab056a4396ac, type: 3}
+  - {fileID: 8300000, guid: 0b3ea6e0b36720a41964f411c0bb03e1, type: 3}
+  - {fileID: 8300000, guid: e91d032d573f17d43be7fba00d313abe, type: 3}
+  minVolume: 0.8
+  maxVolume: 1.2
+  minPitch: 0.8
+  maxPitch: 1.2

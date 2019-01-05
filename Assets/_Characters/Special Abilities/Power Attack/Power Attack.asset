@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b83714239912b30459240adc47bfcd4b, type: 3}
   m_Name: Power Attack
   m_EditorClassIdentifier: 
-  energyCost: 10
-  bonusDamage: 3
+  energyCost: 33
+  bonusDamage: 1

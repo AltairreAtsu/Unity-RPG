@@ -778,12 +778,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa12d42fb4986254fa8b21ed22b3db4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 10
-  currentHealth: 10
-  attackRadius: 2
-  chaseRadius: 3
+  maxHealthPoints: 20
+  currentHealth: 20
+  attackRadius: 3
+  chaseRadius: 5
   delayBetweenShots: 0.5
-  damagePerShot: 5
+  damagePerShot: 7
   projectileSocket: {fileID: 1570696537728952}
   projectileToUse: {fileID: 1615473026529740, guid: 093a0dbc41fdb9e4386785d5bbd6ef66,
     type: 3}

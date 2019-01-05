@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,9 +13,16 @@ MonoBehaviour:
   m_Name: Dagger
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1294703482714418, guid: 94794573159627a4e9d95a2657313b64,
-    type: 2}
-  weaponGrip: {fileID: 4606222750357070, guid: 6cbf882f7c113044481ed731881869ce, type: 2}
+    type: 3}
+  weaponGrip: {fileID: 4606222750357070, guid: 6cbf882f7c113044481ed731881869ce, type: 3}
   weaponHand: 1
-  attackAnimation: {fileID: 7400000, guid: d82669b37833c5f4db716b82428a5ad6, type: 3}
+  attackAnimations:
+  - {fileID: 7400000, guid: 0799365aa9bf37644b140022e57f7c3a, type: 3}
+  - {fileID: 7400000, guid: 1df409e6ddc86e349bd1b737f4742f37, type: 3}
+  - {fileID: 7400000, guid: c81a2f8176a9f014c87062f6b125755b, type: 3}
+  - {fileID: 7400000, guid: 668fdc4f7012b7943a1e3a891aedc143, type: 3}
+  - {fileID: 7400000, guid: 32dbe676b3c566c4a9836c244bb478dd, type: 3}
+  - {fileID: 7400000, guid: 39b380f7b0a826d4bab9948086dd1ff1, type: 3}
   attackCooldown: 0.9
   attackRange: 2
+  attackSpeedMultiplier: 1

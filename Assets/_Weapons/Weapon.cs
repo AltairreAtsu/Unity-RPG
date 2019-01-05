@@ -8,12 +8,13 @@ namespace RPG.Weapons {
 	[CreateAssetMenu(menuName ="RPG/Weapon")]
 	public class Weapon : ScriptableObject
 	{
-		[SerializeField] private GameObject weaponPrefab;
-		[SerializeField] private Transform weaponGrip;
+		[SerializeField] private GameObject weaponPrefab = null;
+		[SerializeField] private Transform weaponGrip = null;
 		[SerializeField] private Hand weaponHand;
-		[SerializeField] private AnimationClip attackAnimation;
-		[SerializeField] private float attackCooldown;
-		[SerializeField] private float attackRange;
+		[SerializeField] private AnimationClip[] attackAnimations = null;
+		[SerializeField] private float attackCooldown = 1f;
+		[SerializeField] private float attackRange = 3f;
+		[SerializeField] private float attackSpeedMultiplier = 1f;
 
 		public Transform getWeaponGrip()
 		{
@@ -27,9 +28,9 @@ namespace RPG.Weapons {
 
 		public AnimationClip GetAnimation()
 		{
-			// Prevents errors from being thrown due to null animation event recievers.
-			RemoveAnimationEvents();
-			return attackAnimation;
+			var attackAnimation = attackAnimations[Random.Range(0, attackAnimations.Length - 1)];
+
+			return RemoveAnimationEvents(attackAnimation);
 		}
 
 		public float GetAttackCooldown()
@@ -47,9 +48,15 @@ namespace RPG.Weapons {
 			return weaponHand;
 		}
 
-		private void RemoveAnimationEvents()
+		public float GetAttackSpeedMultiplier()
+		{
+			return attackSpeedMultiplier;
+		}
+
+		private AnimationClip RemoveAnimationEvents(AnimationClip attackAnimation)
 		{
 			attackAnimation.events = new AnimationEvent[0];
+			return attackAnimation;
 		}
 	}
 }

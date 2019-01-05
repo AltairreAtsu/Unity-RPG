@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,9 +13,17 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1782442640990626, guid: a7360a68108dc2d42835862ecc963d90,
-    type: 2}
-  weaponGrip: {fileID: 4912696005092772, guid: 74ad42aa25baeee489121dcb04221333, type: 2}
+    type: 3}
+  weaponGrip: {fileID: 4912696005092772, guid: 74ad42aa25baeee489121dcb04221333, type: 3}
   weaponHand: 1
-  attackAnimation: {fileID: 7400000, guid: 4cc7a6346b1003244b110b3324155da7, type: 3}
-  attackCooldown: 1
+  attackAnimations:
+  - {fileID: 7400000, guid: d82669b37833c5f4db716b82428a5ad6, type: 3}
+  - {fileID: 7400000, guid: 4cc7a6346b1003244b110b3324155da7, type: 3}
+  - {fileID: 7400000, guid: 475796453e56ae447b098689c94bcfb5, type: 3}
+  - {fileID: 7400000, guid: 841b2c438c95c83479a59db0d737063d, type: 3}
+  - {fileID: 7400000, guid: c78137fcedc5ac34eb998beb409a0004, type: 3}
+  - {fileID: 7400000, guid: 58f2909dff975b54c8395d479180996e, type: 3}
+  - {fileID: 7400000, guid: 65ab56ec63abae340b7646d2ed24c864, type: 3}
+  attackCooldown: 0.6
   attackRange: 3
+  attackSpeedMultiplier: 1.2

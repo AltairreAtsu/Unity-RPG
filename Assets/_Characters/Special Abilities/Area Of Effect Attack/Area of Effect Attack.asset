@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Area of Effect Attack
   m_EditorClassIdentifier: 
   energyCost: 30
-  radius: 5
-  bonusDamage: 5
+  radius: 10
+  bonusDamage: 1

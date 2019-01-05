@@ -15,7 +15,6 @@ namespace RPG.Characters
 
 		public void Use(AbilityUseParams args)
 		{
-			print("Power Attack used!");
 			args.target.TakeDamage(args.baseDamage + config.GetBonusDamage());
 		}
 	}
