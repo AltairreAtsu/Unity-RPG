@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 2.6
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 38e97b6d97107c04eb89876af5697ef2, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 18ce8d3d0be1c974487676f1c86ad25d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -17584,7 +17584,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnergyBar: {fileID: 1587655613}
   maxEnergy: 100
-  energyPerAttack: 10
 --- !u!1001 &1290336242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22658,6 +22657,12 @@ PrefabInstance:
       propertyPath: heldWeapon
       value: 
       objectReference: {fileID: 11400000, guid: 69b99179d27a01f449bb387e790d66ec,
+        type: 2}
+    - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
+        type: 3}
+      propertyPath: abilityOne
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d11390c36985f44aa14f0ced57fd671,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4504f04a98ddb874b8ba77f0485274f2, type: 3}

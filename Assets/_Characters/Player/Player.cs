@@ -6,7 +6,6 @@ using UnityEngine.Assertions;
 using RPG.CameraUI;
 using RPG.Weapons;
 using RPG.Core;
-using System;
 
 namespace RPG.Characters
 {
@@ -15,13 +14,12 @@ namespace RPG.Characters
 		[SerializeField] private float maxHealthPoints = 10f;
 		[SerializeField] private float currentHealth = 10f;
 		[Space]
-		[SerializeField] private int enemyLayer = 9;
-		[SerializeField] private float damagePerShot = 3f;
+		[SerializeField] private float baseDamage = 3f;
+		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
+		[SerializeField] private Weapon heldWeapon = null;
+		[SerializeField] private SpecialAbilityConfig abilityOne = null;
 
-		[SerializeField] private Weapon heldWeapon;
-
-		[SerializeField] private AnimatorOverrideController animatorOverrideController;
-
+		private Energy energy;
 		private Animator animator;
 
 		private float lastDamageTime = 0f;
@@ -30,9 +28,27 @@ namespace RPG.Characters
 		private void Start()
 		{
 			animator = GetComponent<Animator>();
+			energy = GetComponent<Energy>();
 
 			PutWeaponInHand();
 			SetupRuntimeAnimator();
+
+			FindObjectOfType<CameraRaycaster>().onMouseOverEnemy += OnMouseOverEnemy;
+
+			abilityOne.AddComponent(gameObject);
+		}
+
+		private void OnMouseOverEnemy(Enemy enemy)
+		{
+			if (Input.GetMouseButtonDown(1))
+			{
+				if (energy.IsEnergyAvailable(abilityOne.EnergyCost))
+				{
+					energy.ConsumeEnergy(abilityOne.EnergyCost);
+					var abilityParams = new AbilityUseParams(gameObject, enemy, baseDamage);
+					abilityOne.Use(abilityParams);
+				}
+			}
 		}
 
 		private void SetupRuntimeAnimator()
@@ -114,7 +130,7 @@ namespace RPG.Characters
 			transform.LookAt(targetObject.transform);
 
 			animator.SetTrigger("Attack");
-			target.TakeDamage(damagePerShot);
+			target.TakeDamage(baseDamage);
 			lastDamageTime = Time.time;
 		}
 
@@ -129,6 +145,11 @@ namespace RPG.Characters
 		{
 			var distanceToPlayer = Vector3.Distance(transform.position, position);
 			return distanceToPlayer <= heldWeapon.GetAttackRange();
+		}
+
+		public Transform GetTransform()
+		{
+			return transform;
 		}
 	}
 }

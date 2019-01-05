@@ -45,7 +45,6 @@ namespace RPG.CameraUI {
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxRaycastDepth);
-
 			var rayHit = new RayHit(null, null, false);
 
 			foreach (RaycastHit hit in raycastHits)

@@ -58,7 +58,7 @@ namespace RPG.Characters
 
 		private void OnMouseOverWalkable(Vector3 point)
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButton(0))
 			{
 				currentWalkTarget.position = point;
 				aiCharacter.SetTarget(currentWalkTarget);

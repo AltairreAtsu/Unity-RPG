@@ -93,5 +93,9 @@ namespace RPG.Characters {
 			Gizmos.DrawWireSphere(transform.position, chaseRadius);
 		}
 
+		public Transform GetTransform()
+		{
+			return transform;
+		}
 	}
 }
