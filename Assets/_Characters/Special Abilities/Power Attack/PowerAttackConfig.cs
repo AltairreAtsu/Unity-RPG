@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RPG.Characters
 {
 	[CreateAssetMenu(menuName ="RPG/Special Ability/Power Attack")]
-	public class PowerAttackConfig : SpecialAbilityConfig
+	public class PowerAttackConfig : AbilityConfig
 	{
 		[Header("Power Attack Specific")]
 		[SerializeField] float bonusDamage = 10f;

@@ -28,6 +28,12 @@ namespace RPG.Characters
 			CreateWalkTarget();
 		}
 
+		public void UnSubscribeFromEvents()
+		{
+			cameraRaycaster.onMouseOverWalkable -= OnMouseOverWalkable;
+			cameraRaycaster.onMouseOverEnemy -= OnMouseOverEnemy;
+		}
+
 		private void GetDependencies()
 		{
 			aiCharacter = GetComponent<AICharacterControl>();

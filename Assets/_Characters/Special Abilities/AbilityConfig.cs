@@ -20,14 +20,15 @@ namespace RPG.Characters
 		}
 	}
 
-	public abstract class SpecialAbilityConfig : ScriptableObject
+	public abstract class AbilityConfig : ScriptableObject
 	{
 		public float EnergyCost { get { return energyCost; } }
 
 		[Header("Special Ability General")]
-		[SerializeField] private float energyCost = 10f;
 		[SerializeField] private KeyCode key;
-		[SerializeField] private GameObject CompoundParticleSystem;
+		[SerializeField] private float energyCost = 10f;
+		[SerializeField] private GameObject compoundParticleSystem;
+		[SerializeField] private AudioClip soundClip;
 
 		protected ISpecialAbility behavior;
 
@@ -38,14 +39,19 @@ namespace RPG.Characters
 			behavior.Use(args);
 		}
 
-		public GameObject GetCompoundParticleSystem()
-		{
-			return CompoundParticleSystem;
-		}
-
 		public KeyCode GetKey()
 		{
 			return key;
+		}
+
+		public GameObject GetCompoundParticleSystem()
+		{
+			return compoundParticleSystem;
+		}
+
+		public AudioClip GetSoundClip()
+		{
+			return soundClip;
 		}
 	}
 

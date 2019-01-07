@@ -19,7 +19,7 @@ namespace RPG.Characters
 		[SerializeField] private float baseDamage = 3f;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
-		[SerializeField] private SpecialAbilityConfig[] abilities = null;
+		[SerializeField] private AbilityConfig[] abilities = null;
 		[Header("Death Variables")]
 		[SerializeField] float deathDelay = 3f;
 		[SerializeField] AudioClipArray deathSoundClips = null;
@@ -51,16 +51,19 @@ namespace RPG.Characters
 
 		private void Update()
 		{
+			if (!IsAlive()) { return; }
 			ScanForAbilityInput();
 		}
 
 		private void ScanForAbilityInput()
 		{
-			foreach (SpecialAbilityConfig ability in abilities)
+			foreach (AbilityConfig ability in abilities)
 			{
 				if(ability.GetKey() == KeyCode.None) { continue; }
 				if (Input.GetKeyDown(ability.GetKey()))
 				{
+					if(!energy.IsEnergyAvailable(ability.EnergyCost)) { return; }
+					energy.ConsumeEnergy(ability.EnergyCost);
 					AbilityUseParams args = new AbilityUseParams(gameObject, null, baseDamage);
 					ability.Use(args);
 				}
@@ -69,7 +72,7 @@ namespace RPG.Characters
 
 		private void AttachSpecialAbilities()
 		{
-			foreach (SpecialAbilityConfig ability in abilities)
+			foreach (AbilityConfig ability in abilities)
 			{
 				ability.AddComponent(gameObject);
 			}
@@ -77,6 +80,7 @@ namespace RPG.Characters
 
 		private void OnMouseOverEnemy(Enemy enemy)
 		{
+			if (!IsAlive()) { return; }
 			if (Input.GetMouseButtonDown(1))
 			{
 				TryPerformPowerAttack(enemy);
@@ -175,10 +179,19 @@ namespace RPG.Characters
 		private IEnumerator KillPlayer()
 		{
 			isAlive = false;
+			DisablePlayerMovement();
+
 			deathSoundClips.PlayClip(audioSource);
 			animator.SetTrigger("Die");
 			yield return new WaitForSecondsRealtime(deathDelay);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
+
+		private void DisablePlayerMovement()
+		{
+			var playerMovement = GetComponent<PlayerMovement>();
+			playerMovement.UnSubscribeFromEvents();
+			playerMovement.enabled = false;
 		}
 
 		public void TryAttack (Enemy enemy)

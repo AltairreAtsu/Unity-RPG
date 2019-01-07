@@ -88,13 +88,19 @@ namespace RPG.CameraUI {
 		{
 			if (rayHit.enemyHit != null)
 			{
-				onMouseOverEnemy(rayHit.enemyHit);
+				if(onMouseOverEnemy != null)
+				{
+					onMouseOverEnemy(rayHit.enemyHit);
+				}
 				return;
 			}
 			if (rayHit.hitWalkable)
 			{
 				var hit = (RaycastHit)rayHit.hit;
-				onMouseOverWalkable(hit.point);
+				if(onMouseOverWalkable != null)
+				{
+					onMouseOverWalkable(hit.point);
+				}
 				return;
 			}
 		}

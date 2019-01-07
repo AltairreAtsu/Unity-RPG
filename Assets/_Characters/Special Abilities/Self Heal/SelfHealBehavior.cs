@@ -16,10 +16,10 @@ namespace RPG.Characters
 			PlayEffect(args);
 		}
 
-		private static void HealCaster(AbilityUseParams args)
+		private void HealCaster(AbilityUseParams args)
 		{
 			var health = args.self.GetComponent<IDamagable>();
-			health.Heal(10f);
+			health.Heal(config.GetHealAmount());
 		}
 
 		public void SetConfig(SelfHealConfig config)
@@ -35,6 +35,9 @@ namespace RPG.Characters
 			effectSystem.callbackListeners += OnEffectComplete;
 			effectSystem.Init();
 			effectSystem.PlayAll();
+
+			var audioSource = vfx.GetComponent<AudioSource>();
+			audioSource.PlayOneShot(config.GetSoundClip());
 		}
 
 		private void OnEffectComplete(GameObject system)
