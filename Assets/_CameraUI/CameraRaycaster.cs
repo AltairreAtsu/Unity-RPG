@@ -2,11 +2,16 @@
 using UnityEngine.EventSystems;
 
 using RPG.Characters;
+using RPG.Weapons;
 
-namespace RPG.CameraUI { 
+namespace RPG.CameraUI {
+
+	public enum CursorState { Enemy, Walkable, Pickup }
+
 	public class CameraRaycaster : MonoBehaviour
 	{
 		[SerializeField] private Texture2D walkCursor = null;
+		[SerializeField] private Texture2D interactableCursor = null;
 		[SerializeField] private Texture2D enemyCursor = null;
 		[SerializeField] private Vector2 cursorHotSpot = new Vector2(96, 96);
 
@@ -19,7 +24,10 @@ namespace RPG.CameraUI {
 		public delegate void OnMouseOverEnemy(Enemy enemy);
 		public event OnMouseOverEnemy onMouseOverEnemy;
 
-		private bool currentlyOverEnemy = false;
+		public delegate void OnMouseOverPickup(WeaponPickupPoint pickup);
+		public event OnMouseOverPickup onMouseOverPickup;
+
+		private CursorState currentState = CursorState.Walkable;
 		private static int WALKABLE_LAYER = 9;
 
 		private void Start()
@@ -36,88 +44,105 @@ namespace RPG.CameraUI {
 			}
 
 			// Raycast to max depth, every frame as things can move under mouse
-			var rayHit = HitPriorityTarget();
-			UpdateCursorDisplay(rayHit);
-			NotifyObservers(rayHit);
+			PerformRaycast();
+
 		}
 
-		private RayHit HitPriorityTarget()
+		private void PerformRaycast()
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxRaycastDepth);
-			var rayHit = new RayHit(null, null, false);
 
+			if (RaycastForEnemies(raycastHits)) { return; }
+			if (RaycastForPickups(raycastHits)) { return; }
+			if (RaycastForWalkable(raycastHits)) { return; }
+			UpdateCursorDisplay(CursorState.Walkable);
+		}
+
+		private bool RaycastForEnemies(RaycastHit[] raycastHits)
+		{
 			foreach (RaycastHit hit in raycastHits)
 			{
-				// Layer Priorities
-				// Highest Priority returns right away
 				var enemy = hit.collider.GetComponent<Enemy>();
-
-				if (enemy != null)
+				if(enemy != null)
 				{
-					rayHit.hit = hit;
-					rayHit.enemyHit = enemy;
-					return rayHit;
+					NotifyEnemyObservers(enemy);
+					UpdateCursorDisplay(CursorState.Enemy);
+					return true;
 				}
-				
-				// Lowest Priority only sets a flag
+			}
+			return false;
+		}
+
+		private bool RaycastForWalkable(RaycastHit[] raycastHits)
+		{
+			foreach (RaycastHit hit in raycastHits)
+			{
 				if (hit.collider.gameObject.layer == WALKABLE_LAYER)
 				{
-					rayHit.hit = hit;
-					rayHit.hitWalkable = true;
+					NotifyWalkableObservers(hit);
+					UpdateCursorDisplay(CursorState.Walkable);
+					return true;
 				}
 			}
-			return rayHit;
+			return false;
 		}
 
-		private void UpdateCursorDisplay(RayHit rayHit)
+		private bool RaycastForPickups(RaycastHit[] raycastHits)
 		{
-			if (rayHit.enemyHit != null && !currentlyOverEnemy)
+			foreach(RaycastHit hit in raycastHits)
 			{
-				currentlyOverEnemy = true;
-				Cursor.SetCursor(enemyCursor, cursorHotSpot, CursorMode.Auto);
-			}
-			else if (rayHit.enemyHit == null && currentlyOverEnemy)
-			{
-				currentlyOverEnemy = false;
-				Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
-			}
-		}
-
-		private void NotifyObservers(RayHit rayHit)
-		{
-			if (rayHit.enemyHit != null)
-			{
-				if(onMouseOverEnemy != null)
+				var weaponPickup = hit.collider.GetComponent<WeaponPickupPoint>();
+				if (weaponPickup != null)
 				{
-					onMouseOverEnemy(rayHit.enemyHit);
+					NotifyPickupObservers(weaponPickup);
+					UpdateCursorDisplay(CursorState.Pickup);
+					return true;
 				}
-				return;
 			}
-			if (rayHit.hitWalkable)
+			return false;
+		}
+
+		private void NotifyPickupObservers(WeaponPickupPoint weapon)
+		{
+			if(onMouseOverPickup != null)
 			{
-				var hit = (RaycastHit)rayHit.hit;
-				if(onMouseOverWalkable != null)
-				{
-					onMouseOverWalkable(hit.point);
-				}
-				return;
+				onMouseOverPickup(weapon);
 			}
 		}
 
-	}
-
-	public struct RayHit
-	{
-		public RaycastHit? hit;
-		public Enemy enemyHit;
-		public bool hitWalkable;
-
-		public RayHit(RaycastHit? hit, Enemy enemyHit, bool hitWalkable)
+		private void NotifyEnemyObservers(Enemy enemy)
 		{
-			this.hit = hit;
-			this.enemyHit = enemyHit;
-			this.hitWalkable = hitWalkable;
+			if (onMouseOverEnemy != null)
+			{
+				onMouseOverEnemy(enemy);
+			}
+		}
+
+		private void NotifyWalkableObservers(RaycastHit hit)
+		{
+			if (onMouseOverWalkable != null)
+			{
+				onMouseOverWalkable(hit.point);
+			}
+		}
+
+		private void UpdateCursorDisplay(CursorState targetState)
+		{
+			if(currentState == targetState) { return;  }
+			currentState = targetState;
+			switch (targetState)
+			{
+				case CursorState.Enemy:
+					Cursor.SetCursor(enemyCursor, cursorHotSpot, CursorMode.Auto);
+					break;
+				case CursorState.Pickup:
+					Cursor.SetCursor(interactableCursor, cursorHotSpot, CursorMode.Auto);
+					break;
+				case CursorState.Walkable:
+					Cursor.SetCursor(walkCursor, cursorHotSpot, CursorMode.Auto);
+					break;
+			}
 		}
 	}
 }

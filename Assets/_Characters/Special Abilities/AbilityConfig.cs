@@ -28,7 +28,6 @@ namespace RPG.Characters
 		[SerializeField] private KeyCode key;
 		[SerializeField] private float energyCost = 10f;
 		[SerializeField] private GameObject compoundParticleSystem;
-		[SerializeField] private AudioClip soundClip;
 
 		abstract public void AddComponent(GameObject gameobjectToAttachTo);
 
@@ -47,11 +46,6 @@ namespace RPG.Characters
 		public GameObject GetCompoundParticleSystem()
 		{
 			return compoundParticleSystem;
-		}
-
-		public AudioClip GetSoundClip()
-		{
-			return soundClip;
 		}
 	}
 

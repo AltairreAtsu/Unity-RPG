@@ -20,6 +20,8 @@ namespace RPG.Characters
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
 		[SerializeField] private AbilityConfig[] abilities = null;
+		[Header("Pickup Variables")]
+		[SerializeField] private float pickupRange = 3f;
 		[Header("Critical Hit Variables")]
 		[SerializeField] [Range(0f, 1.0f)] float criticalHitChance = 0.1f;
 		[SerializeField] float criticalHitMultiplier = 1.5f;
@@ -32,6 +34,7 @@ namespace RPG.Characters
 		private Animator animator;
 		private AudioSource audioSource;
 		private Energy energy;
+		private GameObject weaponObject;
 
 		private Coroutine deathCorotune;
 
@@ -45,10 +48,12 @@ namespace RPG.Characters
 			audioSource = GetComponent<AudioSource>();
 			energy = GetComponent<Energy>();
 
-			PutWeaponInHand();
-			SetupRuntimeAnimator();
+			PutWeaponInHand(heldWeapon);
+			animator.runtimeAnimatorController = animatorOverrideController;
 
-			FindObjectOfType<CameraRaycaster>().onMouseOverEnemy += OnMouseOverEnemy;
+			var cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+			cameraRaycaster.onMouseOverPickup += OnMouseOverPickup;
 
 			AttachSpecialAbilities();
 		}
@@ -91,6 +96,18 @@ namespace RPG.Characters
 			}
 		}
 
+		private void OnMouseOverPickup(WeaponPickupPoint pickup)
+		{
+			if( Vector3.Distance(transform.position, pickup.transform.position) <= pickupRange 
+				&& Input.GetMouseButtonDown(0))
+			{
+				// Move towards weapon if not close enough?
+				// Play Sound
+				// Trigger Animation
+				PutWeaponInHand(pickup.GetWeapon());
+			}
+		}
+
 		private void TryPerformPowerAttack(Enemy enemy)
 		{
 			if (energy.IsEnergyAvailable(abilities[0].EnergyCost))
@@ -101,16 +118,14 @@ namespace RPG.Characters
 			}
 		}
 
-		private void SetupRuntimeAnimator()
+		private void PutWeaponInHand(Weapon weapon)
 		{
-			animator.runtimeAnimatorController = animatorOverrideController;
-			animatorOverrideController["DEFUALT_ATTACK"] = heldWeapon.GetAnimation();
-		}
-
-		private void PutWeaponInHand()
-		{
+			if(weaponObject != null)
+			{
+				Destroy(weaponObject);
+			}
 			Transform weaponSocket = null;
-			switch (heldWeapon.GetHand()){
+			switch (weapon.GetHand()){
 				case Hand.OffHand:
 					weaponSocket = RequestOffHand();
 					break;
@@ -119,11 +134,12 @@ namespace RPG.Characters
 					break;
 			}
 
-			var weapon = Instantiate(heldWeapon.GetWeaponPrefab(), weaponSocket);
-			weapon.transform.localPosition = heldWeapon.getWeaponGrip().transform.position;
-			weapon.transform.localRotation = heldWeapon.getWeaponGrip().transform.rotation;
+			weaponObject = Instantiate(weapon.GetWeaponPrefab(), weaponSocket);
+			weaponObject.transform.localPosition = weapon.getWeaponGrip().transform.position;
+			weaponObject.transform.localRotation = weapon.getWeaponGrip().transform.rotation;
 
-			animator.SetFloat("AttackAnimationSpeedMultiplier", heldWeapon.GetAttackSpeedMultiplier());
+			animator.SetFloat("AttackAnimationSpeedMultiplier", weapon.GetAttackSpeedMultiplier());
+			heldWeapon = weapon;
 		}
 
 		private HandIndicator[] GetHands()
