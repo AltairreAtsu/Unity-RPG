@@ -23,17 +23,9 @@ namespace RPG.Characters
 
 		private void PlayEffect(AbilityUseParams args)
 		{
-			var vfx = Instantiate(config.GetCompoundParticleSystem());
-			vfx.transform.position = args.self.transform.position;
-			var effectSystem = vfx.GetComponent<CompoundParticleSystem>();
-			effectSystem.callbackListeners += OnEffectComplete;
-			effectSystem.Init();
-			effectSystem.PlayAll();
-		}
-
-		private void OnEffectComplete(GameObject system)
-		{
-			Destroy(system);
+			var vfxSystem = Instantiate(config.GetCompoundParticleSystem()).GetComponent<CompoundParticleSystem>();
+			vfxSystem.transform.position = args.self.transform.position;
+			vfxSystem.InitAndPlay(selfDestruct: true);
 		}
 
 		private void DealRadialDamage(AbilityUseParams args)

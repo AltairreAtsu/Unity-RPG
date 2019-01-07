@@ -29,20 +29,10 @@ namespace RPG.Characters
 
 		private void PlayEffect(AbilityUseParams args)
 		{
-			var vfx = Instantiate(config.GetCompoundParticleSystem(), args.self.transform);
-			vfx.transform.position = args.self.transform.position;
-			var effectSystem = vfx.GetComponent<CompoundParticleSystem>();
-			effectSystem.callbackListeners += OnEffectComplete;
-			effectSystem.Init();
-			effectSystem.PlayAll();
-
-			var audioSource = vfx.GetComponent<AudioSource>();
-			audioSource.PlayOneShot(config.GetSoundClip());
-		}
-
-		private void OnEffectComplete(GameObject system)
-		{
-			Destroy(system);
+			var vfxSystem = Instantiate(config.GetCompoundParticleSystem(), args.self.transform)
+				.GetComponent<CompoundParticleSystem>();
+			vfxSystem.transform.position = args.self.transform.position;
+			vfxSystem.InitAndPlay(selfDestruct: true);
 		}
 	}
 }

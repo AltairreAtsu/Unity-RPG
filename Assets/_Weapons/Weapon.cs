@@ -12,6 +12,7 @@ namespace RPG.Weapons {
 		[SerializeField] private Transform weaponGrip = null;
 		[SerializeField] private Hand weaponHand;
 		[SerializeField] private AnimationClip[] attackAnimations = null;
+		[SerializeField] private float weaponDamage = 1f;
 		[SerializeField] private float attackCooldown = 1f;
 		[SerializeField] private float attackRange = 3f;
 		[SerializeField] private float attackSpeedMultiplier = 1f;
@@ -51,6 +52,11 @@ namespace RPG.Weapons {
 		public float GetAttackSpeedMultiplier()
 		{
 			return attackSpeedMultiplier;
+		}
+
+		public float GetWeaponDamage()
+		{
+			return weaponDamage;
 		}
 
 		private AnimationClip RemoveAnimationEvents(AnimationClip attackAnimation)

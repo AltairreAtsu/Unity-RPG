@@ -9,11 +9,18 @@ namespace RPG.Core
 		[SerializeField] ParticleSystem[] particleSystems = null;
 		[SerializeField] private float totalDuration = 0f;
 
-		public delegate void OnFinishedPlaying(GameObject system);
-		public event OnFinishedPlaying callbackListeners;
-
-		private Coroutine callbackCoroutine;
+		private AudioSource audioSource;
 		private float longestParticleLifetime = 0f;
+
+		public void InitAndPlay(bool selfDestruct)
+		{
+			Init();
+			PlayAll();
+			if (selfDestruct)
+			{
+				DestroyAfterPlaying();
+			}
+		}
 
 		public void Init()
 		{
@@ -37,25 +44,36 @@ namespace RPG.Core
 				}
 				totalDuration += longestParticleLifetime;
 			}
+
+			audioSource = GetComponent<AudioSource>();
+			if(audioSource != null && audioSource.clip != null 
+				&& audioSource.clip.length > totalDuration)
+			{
+				totalDuration = audioSource.clip.length;
+			}
+		}
+
+		public void CopyRotationAndPositon(Transform transformToCopy)
+		{
+			transform.position = transformToCopy.position;
+			transform.rotation = transformToCopy.rotation;
 		}
 
 		public void PlayAll()
 		{
 			foreach (ParticleSystem particleSystem in particleSystems)
 			{
-				if(callbackCoroutine == null)
-				{
-					callbackCoroutine = StartCoroutine(CallbackMethod());
-				}
 				particleSystem.Play();
+			}
+			if (audioSource != null)
+			{
+				audioSource.Play();
 			}
 		}
 
-		private IEnumerator CallbackMethod()
+		public void DestroyAfterPlaying()
 		{
-			yield return new WaitForSeconds(totalDuration);
-			callbackListeners(gameObject);
-			callbackCoroutine = null;
+			Destroy(gameObject, totalDuration);
 		}
 	}
 

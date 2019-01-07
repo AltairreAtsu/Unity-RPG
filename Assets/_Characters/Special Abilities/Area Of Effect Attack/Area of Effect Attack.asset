@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6502a841c11f7984c9b3f0eb328a6f1e, type: 3}
   m_Name: Area of Effect Attack
   m_EditorClassIdentifier: 
+  key: 49
   energyCost: 30
-  CompoundParticleSystem: {fileID: 7034397035769142829, guid: 6fc7ddf842507034997e2615b861edeb,
+  compoundParticleSystem: {fileID: 7131304005588239009, guid: b46a4cae6d40a464ca0e0d2e5f4cc598,
     type: 3}
+  soundClip: {fileID: 0}
   radius: 10
   bonusDamage: 1

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using RPG.CameraUI;
 using RPG.Weapons;
 using RPG.Core;
-using System;
+
 
 namespace RPG.Characters
 {
@@ -20,6 +20,10 @@ namespace RPG.Characters
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
 		[SerializeField] private AbilityConfig[] abilities = null;
+		[Header("Critical Hit Variables")]
+		[SerializeField] [Range(0f, 1.0f)] float criticalHitChance = 0.1f;
+		[SerializeField] float criticalHitMultiplier = 1.5f;
+		[SerializeField] GameObject criticalHitVFX = null;
 		[Header("Death Variables")]
 		[SerializeField] float deathDelay = 3f;
 		[SerializeField] AudioClipArray deathSoundClips = null;
@@ -208,11 +212,30 @@ namespace RPG.Characters
 		private void Attack(IDamagable target, GameObject targetObject)
 		{
 			transform.LookAt(targetObject.transform);
-
 			animator.SetTrigger("Attack");
-			target.TakeDamage(baseDamage);
+			target.TakeDamage(CalculateDamage());
 			lastDamageTime = Time.time;
 			animatorOverrideController["DEFUALT_ATTACK"] = heldWeapon.GetAnimation();
+		}
+
+
+		private float CalculateDamage()
+		{
+			if (Random.value <= criticalHitChance)
+			{
+				PerformCriticalHit();
+				return (baseDamage + heldWeapon.GetWeaponDamage()) * 3; 
+			}
+			else
+			{
+				return baseDamage + heldWeapon.GetWeaponDamage();
+			}
+		}
+
+		private void PerformCriticalHit()
+		{
+			var vfxSystem = Instantiate(criticalHitVFX, transform).GetComponent<CompoundParticleSystem>();
+			vfxSystem.InitAndPlay(selfDestruct: true);
 		}
 
 		private bool CanAttack(Vector3 position)
