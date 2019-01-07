@@ -6,11 +6,9 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class SelfHealBehavior : MonoBehaviour, ISpecialAbility
+	public class SelfHealBehavior : AbilityBehavior
 	{
-		private SelfHealConfig config;
-
-		public void Use(AbilityUseParams args)
+		public override void Use(AbilityUseParams args)
 		{
 			HealCaster(args);
 			PlayEffect(args);
@@ -18,13 +16,9 @@ namespace RPG.Characters
 
 		private void HealCaster(AbilityUseParams args)
 		{
+			var healconfig = (SelfHealConfig)config;
 			var health = args.self.GetComponent<IDamagable>();
-			health.Heal(config.GetHealAmount());
-		}
-
-		public void SetConfig(SelfHealConfig config)
-		{
-			this.config = config;
+			health.Heal(healconfig.GetHealAmount());
 		}
 
 		private void PlayEffect(AbilityUseParams args)

@@ -29,8 +29,8 @@ namespace RPG.Characters
 		[SerializeField] private float energyCost = 10f;
 		[SerializeField] private GameObject compoundParticleSystem;
 		[SerializeField] private AudioClip soundClip;
-
-		protected ISpecialAbility behavior;
+	
+		protected AbilityBehavior behavior;
 
 		abstract public void AddComponent(GameObject gameobjectToAttachTo);
 
@@ -53,11 +53,6 @@ namespace RPG.Characters
 		{
 			return soundClip;
 		}
-	}
-
-	public interface ISpecialAbility
-	{
-		void Use(AbilityUseParams args);
 	}
 }
 

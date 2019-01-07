@@ -14,8 +14,7 @@ namespace RPG.Characters
 		public override void AddComponent(GameObject gameobjectToAttachTo)
 		{
 			behavior = gameobjectToAttachTo.AddComponent<AreaOfEffectAttackBehavior>();
-			var behave = (AreaOfEffectAttackBehavior)behavior;
-			behave.SetConfig(this);
+			behavior.SetConfig(this);
 		}
 
 		public float GetRadius()

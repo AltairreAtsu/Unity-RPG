@@ -6,16 +6,9 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class AreaOfEffectAttackBehavior : MonoBehaviour, ISpecialAbility
+	public class AreaOfEffectAttackBehavior : AbilityBehavior
 	{
-		private AreaOfEffectAttackConfig config = null;
-
-		public void SetConfig(AreaOfEffectAttackConfig config)
-		{
-			this.config = config;
-		}
-
-		public void Use(AbilityUseParams args)
+		public override void Use(AbilityUseParams args)
 		{
 			DealRadialDamage(args);
 			PlayEffect(args);
@@ -30,7 +23,8 @@ namespace RPG.Characters
 
 		private void DealRadialDamage(AbilityUseParams args)
 		{
-			Collider[] colliders = Physics.OverlapSphere(args.self.transform.position, config.GetRadius());
+			var aoeConfig = (AreaOfEffectAttackConfig)config;
+			Collider[] colliders = Physics.OverlapSphere(args.self.transform.position, aoeConfig.GetRadius());
 			foreach (Collider collider in colliders)
 			{
 				if (collider.gameObject == args.self) { continue; }
@@ -39,7 +33,7 @@ namespace RPG.Characters
 
 				if (damageable != null)
 				{
-					damageable.TakeDamage(args.baseDamage + config.GetBonusDamage());
+					damageable.TakeDamage(args.baseDamage + aoeConfig.GetBonusDamage());
 				}
 			}
 		}
