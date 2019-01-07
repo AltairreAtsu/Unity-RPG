@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-	public class PowerAttackBehavior : AbilityBehavior
+	public class PowerAttackBehavior : AbilityBehavior<PowerAttackConfig>
 	{
 		public override void Use(AbilityUseParams args)
 		{
-			var powerConfig = (PowerAttackConfig)config;
-			args.target.TakeDamage(args.baseDamage + powerConfig.GetBonusDamage());
+			args.target.TakeDamage(args.baseDamage + config.GetBonusDamage());
 		}
 	}
 }

@@ -6,13 +6,13 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public abstract class AbilityBehavior : MonoBehaviour
+	public abstract class AbilityBehavior<T> : MonoBehaviour, ISpecialAbility where T: AbilityConfig
 	{
-		protected AbilityConfig config;
+		protected T config;
 		
 		public void SetConfig(AbilityConfig config)
 		{
-			this.config = config;
+			this.config = (T)config;
 		}
 
 		abstract public void Use(AbilityUseParams args);
