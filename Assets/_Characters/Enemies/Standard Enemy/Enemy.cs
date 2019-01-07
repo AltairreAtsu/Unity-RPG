@@ -40,6 +40,11 @@ namespace RPG.Characters {
 			if (currentHealth <= 0) { Destroy(gameObject); }
 		}
 
+		public void Heal(float amount)
+		{
+			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealthPoints);
+		}
+
 		private void Start()
 		{
 			aiCharacter = GetComponent<AICharacterControl>();

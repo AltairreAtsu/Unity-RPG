@@ -25,7 +25,9 @@ namespace RPG.Characters
 		public float EnergyCost { get { return energyCost; } }
 
 		[Header("Special Ability General")]
-		[SerializeField] float energyCost = 10f;
+		[SerializeField] private float energyCost = 10f;
+		[SerializeField] private KeyCode key;
+		[SerializeField] private GameObject CompoundParticleSystem;
 
 		protected ISpecialAbility behavior;
 
@@ -34,6 +36,16 @@ namespace RPG.Characters
 		public void Use(AbilityUseParams args)
 		{
 			behavior.Use(args);
+		}
+
+		public GameObject GetCompoundParticleSystem()
+		{
+			return CompoundParticleSystem;
+		}
+
+		public KeyCode GetKey()
+		{
+			return key;
 		}
 	}
 

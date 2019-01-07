@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using RPG.CameraUI;
 using RPG.Weapons;
 using RPG.Core;
+using System;
 
 namespace RPG.Characters
 {
@@ -18,7 +19,7 @@ namespace RPG.Characters
 		[SerializeField] private float baseDamage = 3f;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
-		[SerializeField] private SpecialAbilityConfig abilityOne = null;
+		[SerializeField] private SpecialAbilityConfig[] abilities = null;
 		[Header("Death Variables")]
 		[SerializeField] float deathDelay = 3f;
 		[SerializeField] AudioClipArray deathSoundClips = null;
@@ -45,19 +46,50 @@ namespace RPG.Characters
 
 			FindObjectOfType<CameraRaycaster>().onMouseOverEnemy += OnMouseOverEnemy;
 
-			abilityOne.AddComponent(gameObject);
+			AttachSpecialAbilities();
+		}
+
+		private void Update()
+		{
+			ScanForAbilityInput();
+		}
+
+		private void ScanForAbilityInput()
+		{
+			foreach (SpecialAbilityConfig ability in abilities)
+			{
+				if(ability.GetKey() == KeyCode.None) { continue; }
+				if (Input.GetKeyDown(ability.GetKey()))
+				{
+					AbilityUseParams args = new AbilityUseParams(gameObject, null, baseDamage);
+					ability.Use(args);
+				}
+			}
+		}
+
+		private void AttachSpecialAbilities()
+		{
+			foreach (SpecialAbilityConfig ability in abilities)
+			{
+				ability.AddComponent(gameObject);
+			}
 		}
 
 		private void OnMouseOverEnemy(Enemy enemy)
 		{
 			if (Input.GetMouseButtonDown(1))
 			{
-				if (energy.IsEnergyAvailable(abilityOne.EnergyCost))
-				{
-					energy.ConsumeEnergy(abilityOne.EnergyCost);
-					var abilityParams = new AbilityUseParams(gameObject, enemy, baseDamage);
-					abilityOne.Use(abilityParams);
-				}
+				TryPerformPowerAttack(enemy);
+			}
+		}
+
+		private void TryPerformPowerAttack(Enemy enemy)
+		{
+			if (energy.IsEnergyAvailable(abilities[0].EnergyCost))
+			{
+				energy.ConsumeEnergy(abilities[0].EnergyCost);
+				var abilityParams = new AbilityUseParams(gameObject, enemy, baseDamage);
+				abilities[0].Use(abilityParams);
 			}
 		}
 
@@ -133,6 +165,11 @@ namespace RPG.Characters
 			{
 				hurtSoundClips.PlayClip(audioSource);
 			}
+		}
+
+		public void Heal(float amount)
+		{
+			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealthPoints);
 		}
 
 		private IEnumerator KillPlayer()
