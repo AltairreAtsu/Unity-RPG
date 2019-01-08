@@ -20,7 +20,7 @@ namespace RPG.CameraUI {
 		public delegate void OnMouseOverWalkable(Vector3 position); // declare new delegate type
 		public event OnMouseOverWalkable onMouseOverWalkable; // instantiate an observer set
 
-		public delegate void OnMouseOverEnemy(Enemy enemy);
+		public delegate void OnMouseOverEnemy(EnemyAI enemy);
 		public event OnMouseOverEnemy onMouseOverEnemy;
 
 		public delegate void OnMouseOverPickup(WeaponPickupPoint pickup);
@@ -62,7 +62,7 @@ namespace RPG.CameraUI {
 		{
 			foreach (RaycastHit hit in raycastHits)
 			{
-				var enemy = hit.collider.GetComponent<Enemy>();
+				var enemy = hit.collider.GetComponent<EnemyAI>();
 				if(enemy != null && enemy.Health.Alive)
 				{
 					NotifyEnemyObservers(enemy);
@@ -110,7 +110,7 @@ namespace RPG.CameraUI {
 			}
 		}
 
-		private void NotifyEnemyObservers(Enemy enemy)
+		private void NotifyEnemyObservers(EnemyAI enemy)
 		{
 			if (onMouseOverEnemy != null)
 			{

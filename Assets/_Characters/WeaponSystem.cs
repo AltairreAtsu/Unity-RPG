@@ -19,9 +19,12 @@ namespace RPG.Weapons
 		[SerializeField] GameObject criticalHitVFX ;
 
 		private Animator animator;
+		private Coroutine attackingCoroutine;
 		private GameObject weaponObject;
 		private float lastDamageTime = 0f;
 
+		public WeaponConfig CurrentWepaon { get { return heldWeapon; } }
+		public bool CurrentlyAttacking { get { return attackingCoroutine != null; } }
 		public float BaseDamage { get { return baseDamage; } }
 
 		private void Start()
@@ -48,8 +51,10 @@ namespace RPG.Weapons
 			}
 
 			weaponObject = Instantiate(weapon.GetWeaponPrefab(), weaponSocket);
-			weaponObject.transform.localPosition = weapon.getWeaponGrip().transform.position;
-			weaponObject.transform.localRotation = weapon.getWeaponGrip().transform.rotation;
+			var weaponGrip = weapon.getWeaponGrip();
+			weaponObject.transform.localPosition = weaponGrip.transform.position;
+			weaponObject.transform.localRotation = weaponGrip.transform.rotation;
+			weaponObject.transform.localScale = weaponGrip.transform.localScale;
 
 			animator.SetFloat("AttackAnimationSpeedMultiplier", weapon.GetAttackSpeedMultiplier());
 			heldWeapon = weapon;
@@ -126,6 +131,33 @@ namespace RPG.Weapons
 		{
 			var vfxSystem = Instantiate(criticalHitVFX, transform).GetComponent<CompoundParticleSystem>();
 			vfxSystem.InitAndPlay(selfDestruct: true);
+		}
+
+		public void StartAttacking(Health target)
+		{
+			if(attackingCoroutine != null)
+			{
+				StopCoroutine(attackingCoroutine);
+			}
+			attackingCoroutine = StartCoroutine(RepeatAttack(target));
+		}
+
+		public void StopAttacking()
+		{
+			if(attackingCoroutine != null)
+			{
+				StopCoroutine(attackingCoroutine);
+				attackingCoroutine = null;
+			}
+		}
+
+		private IEnumerator RepeatAttack(Health target)
+		{
+			while (target.Alive)
+			{
+				TryAttack(target);
+				yield return new WaitForSeconds(heldWeapon.GetAttackCooldown() + 0.1f);
+			}
 		}
 
 		private bool CanAttack(Vector3 position)
