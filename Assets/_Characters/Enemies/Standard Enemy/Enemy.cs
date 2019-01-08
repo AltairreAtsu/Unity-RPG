@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 using RPG.Core;
 
@@ -19,10 +18,12 @@ namespace RPG.Characters {
 		[SerializeField] private float damagePerShot = 5f;
 		[SerializeField] private GameObject projectileSocket;
 		[SerializeField] private GameObject projectileToUse;
-		private Coroutine projectileSpawningCoroutine;
-		private bool isAttacking = false;
+
 		[SerializeField] private Vector3 aimOffset = new Vector3(0, 1, 0);
 
+		private bool isAttacking = false;
+		private CharacterMovement locomotion;
+		private Coroutine projectileSpawningCoroutine;
 		private Player player;
 
 		public float healthAsPercentage
@@ -47,6 +48,7 @@ namespace RPG.Characters {
 		private void Start()
 		{
 			player= GameObject.FindObjectOfType<Player>();
+			locomotion = GetComponent<CharacterMovement>();
 		}
 
 		private void Update()
@@ -65,11 +67,11 @@ namespace RPG.Characters {
 
 			if (distanceToPlayer <= chaseRadius)
 			{
-				//aiCharacter.SetTarget(player.transform);
+				locomotion.SetTarget(player.transform);
 			}
 			else
 			{
-				//aiCharacter.SetTarget(null);
+				locomotion.SetTarget(null);
 			}	
 		}
 

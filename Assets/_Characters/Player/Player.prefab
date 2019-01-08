@@ -1567,9 +1567,8 @@ GameObject:
   - component: {fileID: 54866901593336570}
   - component: {fileID: 136996657368623836}
   - component: {fileID: 4519721337655440120}
-  - component: {fileID: 114920403498187400}
   - component: {fileID: 195096896365667020}
-  - component: {fileID: 114482157178510958}
+  - component: {fileID: 6637067300372370312}
   - component: {fileID: 114316075295077178}
   - component: {fileID: 114013386648170132}
   - component: {fileID: 1286281051}
@@ -1741,24 +1740,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114920403498187400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630556238628396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 360
-  m_StationaryTurnSpeed: 180
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1.2
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 0.3
 --- !u!195 &195096896365667020
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1781,7 +1762,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &114482157178510958
+--- !u!114 &6637067300372370312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1790,10 +1771,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630556238628396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
+  m_Script: {fileID: 11500000, guid: 938ab26b175a6ca48942e93302e1444a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114316075295077178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1806,6 +1786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8296b5f4545b7d46b25c5791cb69296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
+  runCycleLegOffset: 0.2
 --- !u!114 &114013386648170132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1824,7 +1807,11 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123,
     type: 2}
   heldWeapon: {fileID: 11400000, guid: 69b99179d27a01f449bb387e790d66ec, type: 2}
-  abilityOne: {fileID: 11400000, guid: 64f04b6099b514a4381da001d57e3ae5, type: 2}
+  abilities: []
+  pickupRange: 3
+  criticalHitChance: 0.1
+  criticalHitMultiplier: 1.5
+  criticalHitVFX: {fileID: 0}
   deathDelay: 3
   deathSoundClips: {fileID: 0}
   hurtSoundClips: {fileID: 0}
@@ -1840,7 +1827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13714e1e3bbbda04a9bfd02a5d7c02a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnergyBar: {fileID: 0}
+  energyBar: {fileID: 0}
   maxEnergy: 100
   energyRegenPerSecond: 10
 --- !u!1 &1647980984960126

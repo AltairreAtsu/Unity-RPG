@@ -209,9 +209,9 @@ namespace RPG.Characters
 
 		private void DisablePlayerMovement()
 		{
-			var playerMovement = GetComponent<CharacterMovement>();
-			playerMovement.UnSubscribeFromEvents();
-			playerMovement.enabled = false;
+			var playerMouseInput = GetComponent<PlayerMouseControl>();
+			playerMouseInput.UnSubscribeFromEvents();
+			playerMouseInput.enabled = false;
 		}
 
 		public void TryAttack (Enemy enemy)
