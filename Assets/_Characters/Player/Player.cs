@@ -209,7 +209,7 @@ namespace RPG.Characters
 
 		private void DisablePlayerMovement()
 		{
-			var playerMovement = GetComponent<PlayerMovement>();
+			var playerMovement = GetComponent<CharacterMovement>();
 			playerMovement.UnSubscribeFromEvents();
 			playerMovement.enabled = false;
 		}

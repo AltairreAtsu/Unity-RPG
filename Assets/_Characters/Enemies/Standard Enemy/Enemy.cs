@@ -12,7 +12,6 @@ namespace RPG.Characters {
 		[SerializeField] private float maxHealthPoints = 10f;
 		[SerializeField] private float currentHealth = 10f;
 
-		private AICharacterControl aiCharacter;
 		[SerializeField] private float attackRadius = 10f;
 		[SerializeField] private float chaseRadius = 20f;
 		[Space]
@@ -47,8 +46,6 @@ namespace RPG.Characters {
 
 		private void Start()
 		{
-			aiCharacter = GetComponent<AICharacterControl>();
-
 			player= GameObject.FindObjectOfType<Player>();
 		}
 
@@ -68,11 +65,11 @@ namespace RPG.Characters {
 
 			if (distanceToPlayer <= chaseRadius)
 			{
-				aiCharacter.SetTarget(player.transform);
+				//aiCharacter.SetTarget(player.transform);
 			}
 			else
 			{
-				aiCharacter.SetTarget(null);
+				//aiCharacter.SetTarget(null);
 			}	
 		}
 

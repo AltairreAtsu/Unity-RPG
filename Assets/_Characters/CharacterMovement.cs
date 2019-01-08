@@ -3,19 +3,18 @@ using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 using RPG.CameraUI; // TODO consider re-wiring
+using UnityEngine.AI;
 
 namespace RPG.Characters
 {
 	[RequireComponent(typeof(ThirdPersonCharacter))]
-	public class PlayerMovement : MonoBehaviour
+	public class CharacterMovement : MonoBehaviour
 	{
-
-		private AICharacterControl aiCharacter = null;
-		private Transform mainCamera = null;
-		private ThirdPersonCharacter thirdPersonCharacter = null;
-		private CameraRaycaster cameraRaycaster = null;
+		private Transform mainCamera;
+		private ThirdPersonCharacter character;
+		private CameraRaycaster cameraRaycaster;
 		private Player player;
-
+		private NavMeshAgent agent;
 		private Transform currentWalkTarget;
 
 		private void Start()
@@ -36,9 +35,11 @@ namespace RPG.Characters
 
 		private void GetDependencies()
 		{
-			aiCharacter = GetComponent<AICharacterControl>();
-			thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
+			character = GetComponent<ThirdPersonCharacter>();
 			player = GetComponent<Player>();
+			agent = GetComponent<NavMeshAgent>();
+			agent.updatePosition = true;
+			agent.updateRotation = false;
 
 			mainCamera = Camera.main.transform;
 			cameraRaycaster = mainCamera.GetComponent<CameraRaycaster>();
@@ -50,24 +51,23 @@ namespace RPG.Characters
 			currentWalkTarget = walkTargetObject.transform;
 		}
 
-		private void ProcessDirectMovement()
+		private void Update()
 		{
-			float h = Input.GetAxis("Horizontal");
-			float v = Input.GetAxis("Vertical");
-
-			// calculate camera relative direction to move:
-			Vector3 m_CamForward = Vector3.Scale(mainCamera.forward, new Vector3(1, 0, 1)).normalized;
-			Vector3 m_Move = v * m_CamForward + h * mainCamera.right;
-
-			thirdPersonCharacter.Move(m_Move);
+			if (agent.remainingDistance > agent.stoppingDistance)
+			{
+				character.Move(agent.desiredVelocity);
+			}
+			else
+			{
+				character.Move(Vector3.zero);
+			}
 		}
 
 		private void OnMouseOverWalkable(Vector3 point)
 		{
 			if (Input.GetMouseButton(0))
 			{
-				currentWalkTarget.position = point;
-				aiCharacter.SetTarget(currentWalkTarget);
+				agent.SetDestination(point);
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace RPG.Characters
 			{
 				if (!player.InRange(enemy.transform.position))
 				{
-					aiCharacter.SetTarget(enemy.transform);
+					agent.SetDestination(transform.position);
 				}
 				else
 				{
