@@ -55,6 +55,12 @@ namespace RPG.Characters
 		{
 			isAlive = false;
 			if(deathSounds != null) deathSounds.PlayClip(audioSource);
+			var locomotion = GetComponent<CharacterMovement>();
+			if (locomotion && locomotion.isActiveAndEnabled)
+			{
+				locomotion.enabled = false;
+			}
+
 			animator.SetTrigger(DEATH_TRIGGER);
 			if (onDeathListeners != null)
 			{

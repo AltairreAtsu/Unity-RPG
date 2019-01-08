@@ -37,7 +37,6 @@ namespace RPG.Characters {
 		private void OnDeath(float deathDelay)
 		{
 			enabled = false;
-			locomotion.enabled = false;
 			GetComponent<Rigidbody>().useGravity = false;
 			GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
 			GetComponent<CapsuleCollider>().enabled = false;

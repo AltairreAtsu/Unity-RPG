@@ -6,18 +6,20 @@ using RPG.CameraUI;
 
 namespace RPG.Characters
 {
-	public class PlayerMouseControl : MonoBehaviour
+	public class PlayerInput : MonoBehaviour
 	{
 		private CharacterMovement locomotion;
 		private CameraRaycaster cameraRaycaster;
 		private Player player;
+		private SpecialAbilities specialAbilities;
 		private Transform currentWalkTarget;
 
 		private void Start()
 		{
 			locomotion = GetComponent<CharacterMovement>();
-			player = GetComponent<Player>();
 			cameraRaycaster = Camera.main.transform.GetComponent<CameraRaycaster>();
+			player = GetComponent<Player>();
+			specialAbilities = GetComponent<SpecialAbilities>();
 
 			cameraRaycaster.onMouseOverWalkable += OnMouseOverWalkable;
 			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
@@ -34,6 +36,26 @@ namespace RPG.Characters
 		{
 			var walkTargetObject = new GameObject("CurrentWalkTarget");
 			currentWalkTarget = walkTargetObject.transform;
+		}
+
+		private void Update()
+		{
+			ScanForAbilityInput();
+		}
+
+		private void ScanForAbilityInput()
+		{
+			for (int i = 1; i < 10; i++)
+			{
+				if (Input.GetKeyDown(i.ToString())) 
+				{
+					specialAbilities.TryPerformSpecialAbility(i-1);
+				}
+			}
+			if (Input.GetKeyDown("0"))
+			{
+				specialAbilities.TryPerformSpecialAbility(9);
+			}
 		}
 
 		private void OnMouseOverWalkable(Vector3 point)
@@ -57,6 +79,10 @@ namespace RPG.Characters
 				{
 					player.TryAttack(enemy);
 				}
+			}
+			if (Input.GetMouseButtonDown(1))
+			{
+				specialAbilities.TryPerformPowerAttack(enemy.Health);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ namespace RPG.Characters
 		[SerializeField] private float baseDamage = 3f;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
-		[SerializeField] private AbilityConfig[] abilities = null;
+
 		[Header("Pickup Variables")]
 		[SerializeField] private float pickupRange = 3f;
 		[Header("Critical Hit Variables")]
@@ -26,17 +26,17 @@ namespace RPG.Characters
 
 		private Animator animator;
 		private Coroutine deathCorotune;
-		private Energy energy;
 		private GameObject weaponObject;
 
 		private float lastDamageTime = 0f;
 
 		public Health Health { get; private set; }
+		public float BaseDamage { get { return baseDamage; } }
 
 		private void Start()
 		{
 			animator = GetComponent<Animator>();
-			energy = GetComponent<Energy>();
+
 			Health = GetComponent<Health>();
 			Health.onDeathListeners += delegate(float deathDelay) { StartCoroutine(OnPlayerDeath(deathDelay)); };
 
@@ -44,48 +44,12 @@ namespace RPG.Characters
 			animator.runtimeAnimatorController = animatorOverrideController;
 
 			var cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-			cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
 			cameraRaycaster.onMouseOverPickup += OnMouseOverPickup;
-
-			AttachSpecialAbilities();
 		}
 
 		private void Update()
 		{
 			if (!Health.Alive) { return; }
-			ScanForAbilityInput();
-		}
-
-		private void ScanForAbilityInput()
-		{
-			foreach (AbilityConfig ability in abilities)
-			{
-				if(ability.GetKey() == KeyCode.None) { continue; }
-				if (Input.GetKeyDown(ability.GetKey()))
-				{
-					if(!energy.IsEnergyAvailable(ability.EnergyCost)) { return; }
-					energy.ConsumeEnergy(ability.EnergyCost);
-					AbilityUseParams args = new AbilityUseParams(gameObject, null, baseDamage);
-					ability.Use(args);
-				}
-			}
-		}
-
-		private void AttachSpecialAbilities()
-		{
-			foreach (AbilityConfig ability in abilities)
-			{
-				ability.AddComponent(gameObject);
-			}
-		}
-
-		private void OnMouseOverEnemy(Enemy enemy)
-		{
-			if (!Health.Alive) { return; }
-			if (Input.GetMouseButtonDown(1))
-			{
-				TryPerformPowerAttack(enemy);
-			}
 		}
 
 		private void OnMouseOverPickup(WeaponPickupPoint pickup)
@@ -97,16 +61,6 @@ namespace RPG.Characters
 				// Play Sound
 				// Trigger Animation
 				PutWeaponInHand(pickup.GetWeapon());
-			}
-		}
-
-		private void TryPerformPowerAttack(Enemy enemy)
-		{
-			if (energy.IsEnergyAvailable(abilities[0].EnergyCost))
-			{
-				energy.ConsumeEnergy(abilities[0].EnergyCost);
-				var abilityParams = new AbilityUseParams(gameObject, enemy.Health, baseDamage);
-				abilities[0].Use(abilityParams);
 			}
 		}
 
@@ -171,14 +125,14 @@ namespace RPG.Characters
 
 		private IEnumerator OnPlayerDeath(float deathDelay)
 		{
-			DisablePlayerMovement();
+			DisablePlayerInput();
 			yield return new WaitForSecondsRealtime(deathDelay);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
-		private void DisablePlayerMovement()
+		private void DisablePlayerInput()
 		{
-			var playerMouseInput = GetComponent<PlayerMouseControl>();
+			var playerMouseInput = GetComponent<PlayerInput>();
 			playerMouseInput.UnSubscribeFromEvents();
 			playerMouseInput.enabled = false;
 		}

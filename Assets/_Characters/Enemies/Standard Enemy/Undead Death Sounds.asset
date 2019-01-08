@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d5f305f31fe154ba9aaafa76634314, type: 3}
+  m_Name: Undead Death Sounds
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 8179483488a54d94c9cceca232f7f7fe, type: 3}
+  - {fileID: 8300000, guid: b87351acf859ff4479bc4ad9ae57e9b9, type: 3}
+  minVolume: 0.3
+  maxVolume: 0.6
+  minPitch: 0.8
+  maxPitch: 1.2
