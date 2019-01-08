@@ -6,7 +6,7 @@ namespace RPG.Weapons {
 	public enum Hand { OffHand, DominantHand }
 
 	[CreateAssetMenu(menuName ="RPG/Weapon")]
-	public class Weapon : ScriptableObject
+	public class WeaponConfig : ScriptableObject
 	{
 		[SerializeField] private GameObject weaponPrefab = null;
 		[SerializeField] private Transform weaponGrip = null;

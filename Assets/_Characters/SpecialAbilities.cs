@@ -63,7 +63,7 @@ namespace RPG.Characters
 				return;
 			}
 			ConsumeEnergy(abilities[0].EnergyCost);
-			var abilityParams = new AbilityUseParams(gameObject, target, player.BaseDamage);
+			var abilityParams = new AbilityUseParams(gameObject, target, player.WeaponSystem.BaseDamage);
 			abilities[0].Use(abilityParams);
 		}
 
@@ -76,7 +76,7 @@ namespace RPG.Characters
 				return;
 			}
 			ConsumeEnergy(ability.EnergyCost);
-			AbilityUseParams args = new AbilityUseParams(gameObject, null, player.BaseDamage);
+			AbilityUseParams args = new AbilityUseParams(gameObject, null, player.WeaponSystem.BaseDamage);
 			ability.Use(args);
 		}
 	}

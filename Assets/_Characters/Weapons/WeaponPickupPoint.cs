@@ -8,10 +8,10 @@ namespace RPG.Weapons
 	[ExecuteInEditMode]
 	public class WeaponPickupPoint : MonoBehaviour
 	{
-		[SerializeField] private Weapon weaponConfig;
+		[SerializeField] private WeaponConfig weaponConfig;
 		[SerializeField] private AudioClip pcikupSound;
 
-		private Weapon cachedConfig;
+		private WeaponConfig cachedConfig;
 
 		void Start()
 		{
@@ -58,7 +58,7 @@ namespace RPG.Weapons
 			}
 		}
 
-		public Weapon GetWeapon()
+		public WeaponConfig GetWeapon()
 		{
 			return weaponConfig;
 		}

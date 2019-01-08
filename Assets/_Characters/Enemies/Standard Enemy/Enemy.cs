@@ -18,7 +18,7 @@ namespace RPG.Characters {
 		[SerializeField] private GameObject projectileToUse;
 		[SerializeField] private Vector3 aimOffset = new Vector3(0, 1, 0);
 
-		private CharacterMovement locomotion;
+		private Character character;
 		private Coroutine projectileSpawningCoroutine;
 		private Player player;
 
@@ -31,13 +31,15 @@ namespace RPG.Characters {
 			player= GameObject.FindObjectOfType<Player>();
 			Health = GetComponent<Health>();
 			Health.onDeathListeners += OnDeath;
-			locomotion = GetComponent<CharacterMovement>();
+			character = GetComponent<Character>();
 		}
 
 		private void OnDeath(float deathDelay)
 		{
 			enabled = false;
-			GetComponent<Rigidbody>().useGravity = false;
+			var rigidBody = GetComponent<Rigidbody>();
+			rigidBody.useGravity = false;
+			rigidBody.velocity = Vector3.zero;
 			GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
 			GetComponent<CapsuleCollider>().enabled = false;
 			if(projectileSpawningCoroutine != null)
@@ -48,6 +50,7 @@ namespace RPG.Characters {
 
 		private void Update()
 		{
+			if (!Health.Alive) { return; }
 			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 			if (player.Health.Alive && distanceToPlayer <= attackRadius && !isAttacking)
 			{
@@ -62,11 +65,11 @@ namespace RPG.Characters {
 
 			if (distanceToPlayer <= chaseRadius)
 			{
-				locomotion.SetTarget(player.transform);
+				character.SetTarget(player.transform);
 			}
 			else
 			{
-				locomotion.SetTarget(null);
+				character.SetTarget(null);
 			}	
 		}
 

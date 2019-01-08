@@ -8,7 +8,7 @@ namespace RPG.Characters
 {
 	public class PlayerInput : MonoBehaviour
 	{
-		private CharacterMovement locomotion;
+		private Character character;
 		private CameraRaycaster cameraRaycaster;
 		private Player player;
 		private SpecialAbilities specialAbilities;
@@ -16,7 +16,7 @@ namespace RPG.Characters
 
 		private void Start()
 		{
-			locomotion = GetComponent<CharacterMovement>();
+			character = GetComponent<Character>();
 			cameraRaycaster = Camera.main.transform.GetComponent<CameraRaycaster>();
 			player = GetComponent<Player>();
 			specialAbilities = GetComponent<SpecialAbilities>();
@@ -63,7 +63,7 @@ namespace RPG.Characters
 			if (Input.GetMouseButton(0))
 			{
 				currentWalkTarget.transform.position = point;
-				locomotion.SetTarget(currentWalkTarget);
+				character.SetTarget(currentWalkTarget);
 			}
 		}
 
@@ -71,13 +71,13 @@ namespace RPG.Characters
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				if (!player.InRange(enemy.transform.position))
+				if (!player.WeaponSystem.InRange(enemy.transform.position))
 				{
-					locomotion.SetTarget(enemy.transform);
+					character.SetTarget(enemy.transform);
 				}
 				else
 				{
-					player.TryAttack(enemy);
+					player.WeaponSystem.TryAttack(enemy);
 				}
 			}
 			if (Input.GetMouseButtonDown(1))

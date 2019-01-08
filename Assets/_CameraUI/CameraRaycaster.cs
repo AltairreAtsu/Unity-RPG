@@ -16,7 +16,6 @@ namespace RPG.CameraUI {
 		[SerializeField] private Vector2 cursorHotSpot = new Vector2(96, 96);
 
 		private float maxRaycastDepth = 100f; // Hard coded value
-		private int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
 		public delegate void OnMouseOverWalkable(Vector3 position); // declare new delegate type
 		public event OnMouseOverWalkable onMouseOverWalkable; // instantiate an observer set
