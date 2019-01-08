@@ -77,7 +77,8 @@ namespace RPG.Characters
 				}
 				else
 				{
-					player.WeaponSystem.TryAttack(enemy);
+					var health = enemy.GetComponent<Health>();
+					if (health != null) player.WeaponSystem.TryAttack(health);
 				}
 			}
 			if (Input.GetMouseButtonDown(1))

@@ -64,19 +64,6 @@ namespace RPG.Weapons
 			return hands;
 		}
 
-		private Transform RequestOffHand()
-		{
-			var hands = GetHands();
-			foreach (HandIndicator hand in hands)
-			{
-				if (!hand.Dominant)
-				{
-					return hand.transform;
-				}
-			}
-			return null;
-		}
-
 		private Transform RequestDominantHand()
 		{
 			var hands = GetHands();
@@ -90,14 +77,25 @@ namespace RPG.Weapons
 			return null;
 		}
 
-		public void TryAttack(Enemy enemy)
+		private Transform RequestOffHand()
 		{
-			var target = enemy.GetComponent<Health>();
-			if (target == null) { return; }
-
-			if (CanAttack(enemy.transform.position))
+			var hands = GetHands();
+			foreach (HandIndicator hand in hands)
 			{
-				Attack(target, enemy.gameObject);
+				if (!hand.Dominant)
+				{
+					return hand.transform;
+				}
+			}
+			return null;
+		}
+
+		public void TryAttack(Health health)
+		{
+
+			if (CanAttack(health.transform.position))
+			{
+				Attack(health, health.gameObject);
 			}
 		}
 

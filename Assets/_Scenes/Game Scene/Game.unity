@@ -23821,11 +23821,6 @@ PrefabInstance:
       propertyPath: energyBar
       value: 
       objectReference: {fileID: 792905920}
-    - target: {fileID: 6169904856207323539, guid: 4504f04a98ddb874b8ba77f0485274f2,
-        type: 3}
-      propertyPath: baseDamage
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4504f04a98ddb874b8ba77f0485274f2, type: 3}
 --- !u!1001 &1506305672
@@ -28295,6 +28290,11 @@ PrefabInstance:
     - target: {fileID: 4739659580273636, guid: a10503e44e7b540419e7cbab372424d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114504192560653464, guid: a10503e44e7b540419e7cbab372424d7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a10503e44e7b540419e7cbab372424d7, type: 3}

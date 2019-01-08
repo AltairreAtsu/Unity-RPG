@@ -10,11 +10,8 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class Player : MonoBehaviour
+	public class Player : Character
 	{
-		[Header("Pickup Variables")]
-		[SerializeField] private float pickupRange = 3f;
-
 		private Coroutine deathCorotune;
 
 		public WeaponSystem WeaponSystem { get; private set; }
@@ -26,26 +23,6 @@ namespace RPG.Characters
 			Health.onDeathListeners += delegate(float deathDelay) { StartCoroutine(OnPlayerDeath(deathDelay-0.1f)); };
 
 			WeaponSystem = GetComponent<WeaponSystem>();
-
-			var cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-			cameraRaycaster.onMouseOverPickup += OnMouseOverPickup;
-		}
-
-		private void Update()
-		{
-			if (!Health.Alive) { return; }
-		}
-
-		private void OnMouseOverPickup(WeaponPickupPoint pickup)
-		{
-			if( Vector3.Distance(transform.position, pickup.transform.position) <= pickupRange 
-				&& Input.GetMouseButtonDown(0))
-			{
-				// Move towards weapon if not close enough?
-				// Play Sound
-				// Trigger Animation
-				//PutWeaponInHand(pickup.GetWeapon());
-			}
 		}
 
 		private IEnumerator OnPlayerDeath(float deathDelay)

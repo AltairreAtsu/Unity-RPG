@@ -1563,7 +1563,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4843500881572052}
-  - component: {fileID: 114316075295077178}
   - component: {fileID: 7052087349955753055}
   - component: {fileID: 1286281051}
   - component: {fileID: 6169904856207323539}
@@ -1592,38 +1591,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114316075295077178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630556238628396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8296b5f4545b7d46b25c5791cb69296, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123, type: 2}
-  avatar: {fileID: 9000000, guid: ffaf641b210f5ea41952cf36f1379d66, type: 3}
-  mute: 0
-  priority: 128
-  volume: 1
-  pitch: 1
-  spatialBlend: 0
-  center: {x: 0, y: 0.8, z: 0}
-  radius: 0.3
-  height: 1.6
-  movingTurnSpeed: 360
-  stationaryTurnSpeed: 180
-  moveSpeedMultiplier: 1
-  animationSpeedMultiplier: 1
-  speed: 3.5
-  angularSpeed: 120
-  acceleration: 8
-  stoppingDistance: 1.3
-  agentRadius: 0.5
-  agentHeight: 2
 --- !u!114 &7052087349955753055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1703,7 +1670,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf065e749ac4ff4dac613eddc7ba875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupRange: 3
+  controller: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123, type: 2}
+  avatar: {fileID: 9000000, guid: ffaf641b210f5ea41952cf36f1379d66, type: 3}
+  mute: 0
+  priority: 128
+  volume: 1
+  pitch: 1
+  spatialBlend: 0
+  center: {x: 0, y: 0.8, z: 0}
+  radius: 0.3
+  height: 1.6
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
+  moveSpeedMultiplier: 1
+  animationSpeedMultiplier: 1
+  speed: 3.5
+  angularSpeed: 120
+  acceleration: 8
+  stoppingDistance: 1.3
+  agentRadius: 0.5
+  agentHeight: 2
 --- !u!1 &1647980984960126
 GameObject:
   m_ObjectHideFlags: 0
