@@ -23871,7 +23871,7 @@ PrefabInstance:
     - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
         type: 3}
       propertyPath: criticalHitChance
-      value: 0.25
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114013386648170132, guid: 4504f04a98ddb874b8ba77f0485274f2,
         type: 3}
