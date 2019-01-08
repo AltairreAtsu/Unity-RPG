@@ -9,10 +9,10 @@ namespace RPG.Characters
 	public struct AbilityUseParams
 	{
 		public GameObject self;
-		public IDamagable target;
+		public Health target;
 		public float baseDamage;
 
-		public AbilityUseParams(GameObject self, IDamagable target, float baseDamage)
+		public AbilityUseParams(GameObject self, Health target, float baseDamage)
 		{
 			this.self = self;
 			this.target = target;

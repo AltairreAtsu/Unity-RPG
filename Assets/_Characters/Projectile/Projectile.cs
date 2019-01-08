@@ -16,7 +16,7 @@ namespace RPG.Characters
 
 		private void OnTriggerEnter(Collider other)
 		{
-			IDamagable isDamagable = other.GetComponent<IDamagable>();
+			Health isDamagable = other.GetComponent<Health>();
 			if (isDamagable != null)
 			{
 				if (shooter && other.gameObject.layer != shooter.layer)

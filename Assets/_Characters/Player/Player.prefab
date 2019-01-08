@@ -1571,6 +1571,7 @@ GameObject:
   - component: {fileID: 6637067300372370312}
   - component: {fileID: 114316075295077178}
   - component: {fileID: 114013386648170132}
+  - component: {fileID: 7052087349955753055}
   - component: {fileID: 1286281051}
   m_Layer: 11
   m_Name: Player
@@ -1788,7 +1789,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingTurnSpeed: 360
   stationaryTurnSpeed: 180
-  runCycleLegOffset: 0.2
+  moveSpeedMultiplier: 1
+  animationSpeedMultiplier: 1
 --- !u!114 &114013386648170132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,20 +1803,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf065e749ac4ff4dac613eddc7ba875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 100
-  currentHealth: 100
   baseDamage: 10
   animatorOverrideController: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123,
     type: 2}
   heldWeapon: {fileID: 11400000, guid: 69b99179d27a01f449bb387e790d66ec, type: 2}
-  abilities: []
+  abilities:
+  - {fileID: 11400000, guid: 64f04b6099b514a4381da001d57e3ae5, type: 2}
+  - {fileID: 11400000, guid: 6d11390c36985f44aa14f0ced57fd671, type: 2}
+  - {fileID: 11400000, guid: 39348d4f8f50f67458846fd4bc5ec7e7, type: 2}
   pickupRange: 3
   criticalHitChance: 0.1
-  criticalHitMultiplier: 1.5
-  criticalHitVFX: {fileID: 0}
-  deathDelay: 3
-  deathSoundClips: {fileID: 0}
-  hurtSoundClips: {fileID: 0}
+  criticalHitMultiplier: 2
+  criticalHitVFX: {fileID: 4520447110877948107, guid: 91cb72f5914eacc43ab0b83c29915f6b,
+    type: 3}
+--- !u!114 &7052087349955753055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630556238628396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754a2c0bf6384444d913d8609afb5435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+  deathDestroyDelay: 3
+  hurtSounds: {fileID: 11400000, guid: e99231efda48497458ba0ce9709acc98, type: 2}
+  deathSounds: {fileID: 11400000, guid: fe17768672edaf341abd0f4e4fdaf6dd, type: 2}
 --- !u!114 &1286281051
 MonoBehaviour:
   m_ObjectHideFlags: 0

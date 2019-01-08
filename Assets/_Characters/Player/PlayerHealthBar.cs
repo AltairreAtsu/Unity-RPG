@@ -7,7 +7,6 @@ namespace RPG.Characters
 {
 	public class PlayerHealthBar : MonoBehaviour
 	{
-
 		Image healthBarImage;
 		Player player;
 
@@ -21,7 +20,7 @@ namespace RPG.Characters
 		// Update is called once per frame
 		void Update()
 		{
-			healthBarImage.fillAmount = player.healthAsPercentage;
+			healthBarImage.fillAmount = player.Health.HealthAsPercentage;
 		}
 	}
 }

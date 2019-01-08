@@ -16,7 +16,7 @@ namespace RPG.Characters
 
 		private void HealCaster(AbilityUseParams args)
 		{
-			var health = args.self.GetComponent<IDamagable>();
+			var health = args.self.GetComponent<Health>();
 			health.Heal(config.GetHealAmount());
 		}
 

@@ -6,60 +6,56 @@ using RPG.Core;
 
 namespace RPG.Characters { 
 
-	public class Enemy : MonoBehaviour, IDamagable
+	public class Enemy : MonoBehaviour
 	{
-		[SerializeField] private float maxHealthPoints = 10f;
-		[SerializeField] private float currentHealth = 10f;
-
+		[Header("Chase Settings")]
 		[SerializeField] private float attackRadius = 10f;
 		[SerializeField] private float chaseRadius = 20f;
-		[Space]
+		[Header("Projectile Settings")]
 		[SerializeField] private float delayBetweenShots = 0.5f;
 		[SerializeField] private float damagePerShot = 5f;
 		[SerializeField] private GameObject projectileSocket;
 		[SerializeField] private GameObject projectileToUse;
-
 		[SerializeField] private Vector3 aimOffset = new Vector3(0, 1, 0);
 
-		private bool isAttacking = false;
 		private CharacterMovement locomotion;
 		private Coroutine projectileSpawningCoroutine;
 		private Player player;
 
-		public float healthAsPercentage
-		{
-			get
-			{
-				return currentHealth / maxHealthPoints;
-			}
-		}
+		private bool isAttacking = false;
 
-		public void TakeDamage(float damage)
-		{
-			currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealthPoints);
-			if (currentHealth <= 0) { Destroy(gameObject); }
-		}
-
-		public void Heal(float amount)
-		{
-			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealthPoints);
-		}
+		public Health Health { get; private set; }
 
 		private void Start()
 		{
 			player= GameObject.FindObjectOfType<Player>();
+			Health = GetComponent<Health>();
+			Health.onDeathListeners += OnDeath;
 			locomotion = GetComponent<CharacterMovement>();
+		}
+
+		private void OnDeath(float deathDelay)
+		{
+			enabled = false;
+			locomotion.enabled = false;
+			GetComponent<Rigidbody>().useGravity = false;
+			GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
+			GetComponent<CapsuleCollider>().enabled = false;
+			if(projectileSpawningCoroutine != null)
+			{
+				StopCoroutine(projectileSpawningCoroutine);
+			}
 		}
 
 		private void Update()
 		{
 			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-			if (player.IsAlive() && distanceToPlayer <= attackRadius && !isAttacking)
+			if (player.Health.Alive && distanceToPlayer <= attackRadius && !isAttacking)
 			{
 				projectileSpawningCoroutine = StartCoroutine(SpawnProjectiles());
 				isAttacking = true;
 			}
-			else if(!player.IsAlive() && isAttacking || distanceToPlayer > attackRadius && isAttacking)
+			else if(!player.Health.Alive && isAttacking || distanceToPlayer > attackRadius && isAttacking)
 			{
 				StopCoroutine(projectileSpawningCoroutine);
 				isAttacking = false;

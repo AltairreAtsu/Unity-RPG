@@ -28,7 +28,7 @@ namespace RPG.Characters
 			{
 				if (collider.gameObject == args.self) { continue; }
 
-				var damageable = collider.GetComponent<IDamagable>();
+				var damageable = collider.GetComponent<Health>();
 
 				if (damageable != null)
 				{

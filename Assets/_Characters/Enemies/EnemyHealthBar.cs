@@ -20,7 +20,7 @@ namespace RPG.Characters
 		// Update is called once per frame
 		void Update()
 		{
-			float xValue = -(enemy.healthAsPercentage / 2f) - 0.5f;
+			float xValue = -(enemy.Health.HealthAsPercentage / 2f) - 0.5f;
 			healthBarRawImage.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
 		}
 	}

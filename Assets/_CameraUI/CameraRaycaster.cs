@@ -64,7 +64,7 @@ namespace RPG.CameraUI {
 			foreach (RaycastHit hit in raycastHits)
 			{
 				var enemy = hit.collider.GetComponent<Enemy>();
-				if(enemy != null)
+				if(enemy != null && enemy.Health.Alive)
 				{
 					NotifyEnemyObservers(enemy);
 					UpdateCursorDisplay(CursorState.Enemy);

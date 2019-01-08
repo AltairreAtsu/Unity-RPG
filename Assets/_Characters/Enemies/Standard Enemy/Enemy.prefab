@@ -639,6 +639,7 @@ GameObject:
   - component: {fileID: 195863340251014522}
   - component: {fileID: 2222753495891515733}
   - component: {fileID: 114504192560653464}
+  - component: {fileID: 592344084010152541}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -748,7 +749,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingTurnSpeed: 360
   stationaryTurnSpeed: 180
-  runCycleLegOffset: 0.2
+  moveSpeedMultiplier: 1
+  animationSpeedMultiplier: 1
 --- !u!114 &114504192560653464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,8 +763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa12d42fb4986254fa8b21ed22b3db4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 20
-  currentHealth: 20
   attackRadius: 3
   chaseRadius: 5
   delayBetweenShots: 0.5
@@ -771,6 +771,22 @@ MonoBehaviour:
   projectileToUse: {fileID: 1615473026529740, guid: 093a0dbc41fdb9e4386785d5bbd6ef66,
     type: 3}
   aimOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &592344084010152541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626642847127780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754a2c0bf6384444d913d8609afb5435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 20
+  deathDestroyDelay: 3
+  hurtSounds: {fileID: 0}
+  deathSounds: {fileID: 0}
 --- !u!1 &1631248877619560
 GameObject:
   m_ObjectHideFlags: 0

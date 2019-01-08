@@ -11,11 +11,8 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-	public class Player : MonoBehaviour, IDamagable
+	public class Player : MonoBehaviour
 	{
-		[SerializeField] private float maxHealthPoints = 10f;
-		[SerializeField] private float currentHealth = 10f;
-		[Space]
 		[SerializeField] private float baseDamage = 3f;
 		[SerializeField] private AnimatorOverrideController animatorOverrideController = null;
 		[SerializeField] private Weapon heldWeapon = null;
@@ -26,27 +23,22 @@ namespace RPG.Characters
 		[SerializeField] [Range(0f, 1.0f)] float criticalHitChance = 0.1f;
 		[SerializeField] float criticalHitMultiplier = 1.5f;
 		[SerializeField] GameObject criticalHitVFX = null;
-		[Header("Death Variables")]
-		[SerializeField] float deathDelay = 3f;
-		[SerializeField] AudioClipArray deathSoundClips = null;
-		[SerializeField] AudioClipArray hurtSoundClips = null;
 
 		private Animator animator;
-		private AudioSource audioSource;
+		private Coroutine deathCorotune;
 		private Energy energy;
 		private GameObject weaponObject;
 
-		private Coroutine deathCorotune;
-
-		private bool isAlive = true;
 		private float lastDamageTime = 0f;
-		public float healthAsPercentage { get { return currentHealth / maxHealthPoints; } }
+
+		public Health Health { get; private set; }
 
 		private void Start()
 		{
 			animator = GetComponent<Animator>();
-			audioSource = GetComponent<AudioSource>();
 			energy = GetComponent<Energy>();
+			Health = GetComponent<Health>();
+			Health.onDeathListeners += delegate(float deathDelay) { StartCoroutine(OnPlayerDeath(deathDelay)); };
 
 			PutWeaponInHand(heldWeapon);
 			animator.runtimeAnimatorController = animatorOverrideController;
@@ -60,7 +52,7 @@ namespace RPG.Characters
 
 		private void Update()
 		{
-			if (!IsAlive()) { return; }
+			if (!Health.Alive) { return; }
 			ScanForAbilityInput();
 		}
 
@@ -89,7 +81,7 @@ namespace RPG.Characters
 
 		private void OnMouseOverEnemy(Enemy enemy)
 		{
-			if (!IsAlive()) { return; }
+			if (!Health.Alive) { return; }
 			if (Input.GetMouseButtonDown(1))
 			{
 				TryPerformPowerAttack(enemy);
@@ -113,7 +105,7 @@ namespace RPG.Characters
 			if (energy.IsEnergyAvailable(abilities[0].EnergyCost))
 			{
 				energy.ConsumeEnergy(abilities[0].EnergyCost);
-				var abilityParams = new AbilityUseParams(gameObject, enemy, baseDamage);
+				var abilityParams = new AbilityUseParams(gameObject, enemy.Health, baseDamage);
 				abilities[0].Use(abilityParams);
 			}
 		}
@@ -177,32 +169,9 @@ namespace RPG.Characters
 			return null;
 		}
 
-		public void TakeDamage(float damage)
+		private IEnumerator OnPlayerDeath(float deathDelay)
 		{
-			currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealthPoints);
-			if (currentHealth <= 0)
-			{
-				if (deathCorotune != null) { return; }
-				deathCorotune = StartCoroutine(KillPlayer());
-			}
-			else
-			{
-				hurtSoundClips.PlayClip(audioSource);
-			}
-		}
-
-		public void Heal(float amount)
-		{
-			currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealthPoints);
-		}
-
-		private IEnumerator KillPlayer()
-		{
-			isAlive = false;
 			DisablePlayerMovement();
-
-			deathSoundClips.PlayClip(audioSource);
-			animator.SetTrigger("Die");
 			yield return new WaitForSecondsRealtime(deathDelay);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
@@ -216,7 +185,7 @@ namespace RPG.Characters
 
 		public void TryAttack (Enemy enemy)
 		{
-			var target = enemy.GetComponent<IDamagable>();
+			var target = enemy.GetComponent<Health>();
 			if (target == null) { return; }
 
 			if (CanAttack(enemy.transform.position))
@@ -225,7 +194,7 @@ namespace RPG.Characters
 			}
 		}
 
-		private void Attack(IDamagable target, GameObject targetObject)
+		private void Attack(Health target, GameObject targetObject)
 		{
 			transform.LookAt(targetObject.transform);
 			animator.SetTrigger("Attack");
@@ -270,11 +239,6 @@ namespace RPG.Characters
 		public Transform GetTransform()
 		{
 			return transform;
-		}
-
-		public bool IsAlive()
-		{
-			return isAlive;
 		}
 	}
 }
