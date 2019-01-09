@@ -73,13 +73,27 @@ public class WaypointPath : MonoBehaviour
 			Gizmos.color = Color.yellow;
 			if (i > 0)
 			{
-				Gizmos.DrawLine(waypoints[i - 1].point + transform.position, waypoints[i].point + transform.position);
+				DrawArrow(waypoints[i - 1].point + transform.position, waypoints[i].point + transform.position);
 			}
 		}
 		if (pathIsRingLoop)
 		{
 			Gizmos.DrawLine(waypoints[0].point, waypoints[waypoints.Count - 1].point);
 		}
+	}
+
+	private void DrawArrow(Vector3 start, Vector3 end)
+	{
+		var direction = end - start;
+		var arrowHeadAngle = 30;
+		var arrowHeadLength = 0.5f;
+
+		Gizmos.DrawRay(start, direction);
+
+		Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+		Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+		Gizmos.DrawRay(start + direction, right * arrowHeadLength);
+		Gizmos.DrawRay(start + direction, left * arrowHeadLength);
 	}
 }
 
@@ -88,11 +102,6 @@ public struct Waypoint
 {
 	[SerializeField] public Vector3 point;
 	[SerializeField] public float pause;
-
-	public void SetPoint(Vector3 point)
-	{
-		this.point = point;
-	}
 }
 
 public class WaypointIterator
