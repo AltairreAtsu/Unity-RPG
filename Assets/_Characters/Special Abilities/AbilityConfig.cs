@@ -27,6 +27,7 @@ namespace RPG.Characters
 		[Header("Special Ability General")]
 		[SerializeField] private float energyCost = 10f;
 		[SerializeField] private GameObject compoundParticleSystem;
+		[SerializeField] private AnimationClip abilityAnimation;
 
 		abstract public void AddComponent(GameObject gameobjectToAttachTo);
 
@@ -40,6 +41,11 @@ namespace RPG.Characters
 		public GameObject GetCompoundParticleSystem()
 		{
 			return compoundParticleSystem;
+		}
+
+		public AnimationClip GetAbilityAnimation()
+		{
+			return abilityAnimation;
 		}
 	}
 

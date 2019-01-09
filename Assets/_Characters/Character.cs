@@ -9,6 +9,7 @@ namespace RPG.Characters
 	{
 		[Header("Animator:")]
 		[SerializeField] RuntimeAnimatorController controller;
+		[SerializeField] AnimatorOverrideController overrideController;
 		[SerializeField] Avatar avatar;
 
 		[Header("Audiosource:")]
@@ -48,6 +49,8 @@ namespace RPG.Characters
 		float forwardAmount;
 		float turnAmount;
 
+		public AnimatorOverrideController OverrideAnimator { get { return overrideController; } }
+
 		private void Awake()
 		{
 			AddRequiredComponents();
@@ -56,7 +59,14 @@ namespace RPG.Characters
 		private void AddRequiredComponents()
 		{
 			animator = gameObject.AddComponent<Animator>();
-			animator.runtimeAnimatorController = controller;
+			if (overrideController)
+			{
+				animator.runtimeAnimatorController = overrideController;
+			}
+			else
+			{
+				animator.runtimeAnimatorController = controller;
+			}
 			animator.avatar = avatar;
 
 			var audioSource = gameObject.AddComponent<AudioSource>();

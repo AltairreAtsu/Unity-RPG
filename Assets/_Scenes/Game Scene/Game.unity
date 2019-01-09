@@ -27047,7 +27047,7 @@ MonoBehaviour:
     pause: 5
   - point: {x: 5.8964734, y: 0, z: 0.7679691}
     pause: 10
-  - point: {x: 6.469632, y: 0, z: -2.746286}
+  - point: {x: 6.115115, y: 0, z: -2.872757}
     pause: 5
 --- !u!4 &1732214069
 Transform:

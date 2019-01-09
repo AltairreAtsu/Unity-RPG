@@ -11,7 +11,8 @@ namespace RPG.Characters
 		public override void Use(AbilityUseParams args)
 		{
 			HealCaster(args);
-			PlayEffect(args);
+			PlayEffect(args, stickToCaster: true);
+			PlayAbilityAnimation(args);
 		}
 
 		private void HealCaster(AbilityUseParams args)
@@ -20,13 +21,6 @@ namespace RPG.Characters
 			health.Heal(config.GetHealAmount());
 		}
 
-		private void PlayEffect(AbilityUseParams args)
-		{
-			var vfxSystem = Instantiate(config.GetCompoundParticleSystem(), args.self.transform)
-				.GetComponent<CompoundParticleSystem>();
-			vfxSystem.transform.position = args.self.transform.position;
-			vfxSystem.InitAndPlay(selfDestruct: true);
-		}
 	}
 }
 

@@ -79,7 +79,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8296b5f4545b7d46b25c5791cb69296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123, type: 2}
+  controller: {fileID: 9100000, guid: e2cf68ff4b1ffda45a77f7307dd789b9, type: 2}
+  overrideController: {fileID: 22100000, guid: 5bc241382044f804db0cdfa880a35123, type: 2}
   avatar: {fileID: 9000000, guid: 26b3499b44b072f48a6372bb052d97c6, type: 3}
   mute: 0
   priority: 128
@@ -112,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseRadius: 5
+  patrolPath: {fileID: 0}
 --- !u!114 &592344084010152541
 MonoBehaviour:
   m_ObjectHideFlags: 0

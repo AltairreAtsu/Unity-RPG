@@ -11,14 +11,7 @@ namespace RPG.Characters
 		public override void Use(AbilityUseParams args)
 		{
 			DealRadialDamage(args);
-			PlayEffect(args);
-		}
-
-		private void PlayEffect(AbilityUseParams args)
-		{
-			var vfxSystem = Instantiate(config.GetCompoundParticleSystem()).GetComponent<CompoundParticleSystem>();
-			vfxSystem.transform.position = args.self.transform.position;
-			vfxSystem.InitAndPlay(selfDestruct: true);
+			PlayEffect(args, stickToCaster: false);
 		}
 
 		private void DealRadialDamage(AbilityUseParams args)
