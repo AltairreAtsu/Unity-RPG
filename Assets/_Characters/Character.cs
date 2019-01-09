@@ -41,7 +41,9 @@ namespace RPG.Characters
 		Health health;
 		NavMeshAgent navAgent;
 		Rigidbody rigidBody;
-		Transform target;
+		Transform targetTransform;
+
+		Vector3 targetPosition;
 
 		float forwardAmount;
 		float turnAmount;
@@ -88,7 +90,7 @@ namespace RPG.Characters
 
 		private void Update()
 		{
-			if(target == null || !health.Alive) { return; }
+			if(!health.Alive) { return; }
 			if (navAgent.remainingDistance > navAgent.stoppingDistance)
 			{
 				Move(navAgent.desiredVelocity);
@@ -97,12 +99,27 @@ namespace RPG.Characters
 			{
 				Move(Vector3.zero);
 			}
-			navAgent.SetDestination(target.position);
+
+			if (targetTransform)
+			{
+				navAgent.SetDestination(targetTransform.position);
+			}
+			else if (targetPosition != Vector3.zero)
+			{
+				navAgent.SetDestination(targetPosition);
+			}
+			
 		}
 
-		public void SetTarget(Transform target)
+		public void SetTarget(Transform targetTransform)
 		{
-			this.target = target;
+			this.targetTransform = targetTransform;
+			targetPosition = Vector3.zero;
+		}
+		public void SetTarget(Vector3 targetPosition)
+		{
+			this.targetPosition = targetPosition;
+			targetTransform = null;
 		}
 
 		private void Move(Vector3 movement)

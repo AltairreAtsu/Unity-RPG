@@ -71,7 +71,7 @@ namespace RPG.Characters
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				if (!player.WeaponSystem.InRange(enemy.transform.position))
+				if (!player.WeaponSystem.IsInRange(enemy.transform.position))
 				{
 					character.SetTarget(enemy.transform);
 				}

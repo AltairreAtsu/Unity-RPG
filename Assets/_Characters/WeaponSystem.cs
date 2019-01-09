@@ -164,10 +164,10 @@ namespace RPG.Weapons
 		{
 			var AttackCooldown = (Time.time - lastDamageTime < heldWeapon.GetAttackCooldown());
 
-			return (!AttackCooldown) && (InRange(position));
+			return (!AttackCooldown) && (IsInRange(position));
 		}
 
-		public bool InRange(Vector3 position)
+		public bool IsInRange(Vector3 position)
 		{
 			var distanceToPlayer = Vector3.Distance(transform.position, position);
 			return distanceToPlayer <= heldWeapon.GetAttackRange();

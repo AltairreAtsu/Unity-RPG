@@ -10,14 +10,21 @@ namespace RPG.Characters {
 	{
 		[Header("Chase Settings")]
 		[SerializeField] private float chaseRadius = 20f;
+		[SerializeField] private WaypointPath patrolPath;
 
+		enum States { Idle, Patroling, Chasing, Attacking }
+		States state = States.Idle;
 
 		private Character character;
-		private Coroutine projectileSpawningCoroutine;
+		private Coroutine patrolCoroutine;
 		private Player player;
+		private WaypointIterator iterator;
 		private WeaponSystem weaponSystem;
 
+		private Vector3 originalPosition;
+
 		private float currentWeaponRange;
+		private bool OutOfCombat { get { return state == States.Idle || state == States.Patroling; } }
 
 
 		public Health Health { get; private set; }
@@ -30,6 +37,15 @@ namespace RPG.Characters {
 			player = FindObjectOfType<Player>();
 			weaponSystem = GetComponent<WeaponSystem>();
 			currentWeaponRange = weaponSystem.CurrentWepaon.GetAttackRange();
+			originalPosition = transform.position;
+
+			if (patrolPath)
+			{
+				iterator = patrolPath.GetNewIterator();
+				state = States.Patroling;
+				character.SetTarget(patrolPath.GetFirstWaypoint());
+				Patrol();
+			}
 		}
 
 		private void OnDeath(float deathDelay)
@@ -41,10 +57,6 @@ namespace RPG.Characters {
 			rigidBody.velocity = Vector3.zero;
 			GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
 			GetComponent<CapsuleCollider>().enabled = false;
-			if(projectileSpawningCoroutine != null)
-			{
-				StopCoroutine(projectileSpawningCoroutine);
-			}
 		}
 
 		private void Update()
@@ -52,35 +64,81 @@ namespace RPG.Characters {
 			if (!Health.Alive) { return; }
 
 			float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-			UpdateAttackState(distanceToPlayer);
-			UpdateChaseState(distanceToPlayer);
+			var playerInRange = weaponSystem.IsInRange(player.transform.position);
+
+			if (OutOfCombat && distanceToPlayer <= chaseRadius)
+			{
+				if(patrolCoroutine != null)
+				{
+					StopCoroutine(patrolCoroutine);
+					patrolCoroutine = null;
+				}
+				state = States.Chasing;
+				character.SetTarget(player.transform);
+				return;
+			}
+			if (state == States.Chasing && playerInRange && player.Health.Alive )
+			{
+				state = States.Attacking;
+				weaponSystem.StartAttacking(player.Health);
+				return;
+			}
+			if (state == States.Attacking && !playerInRange 
+				|| state == States.Attacking && !player.Health.Alive)
+			{
+				state = States.Chasing;
+				weaponSystem.StopAttacking();
+				return;
+			}
+			if (state == States.Chasing && distanceToPlayer > chaseRadius )
+			{
+				TransitionOutOfCombat();
+				return;
+			}
+			if (state == States.Patroling)
+			{
+				Patrol();
+				return;
+			}
 		}
 
-		private void UpdateChaseState(float distanceToPlayer)
+		private void Patrol()
 		{
-			if (distanceToPlayer <= chaseRadius)
+			if (patrolCoroutine == null)
 			{
-				character.SetTarget(player.transform);
+				patrolCoroutine = StartCoroutine(DoPatrol());
+			}
+		}
+
+		private IEnumerator DoPatrol()
+		{
+			while (true)
+			{
+				if (patrolPath.AtWaypoint(iterator, transform.position))
+				{
+					if (iterator.pause > 0)
+					{
+						yield return new WaitForSeconds(iterator.pause);
+						iterator.pause = 0f;
+					}
+					character.SetTarget(patrolPath.GetNextWaypoint(iterator));
+				}
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
+		private void TransitionOutOfCombat()
+		{
+			weaponSystem.StopAttacking();
+			if (patrolPath)
+			{
+				state = States.Patroling;
+				Patrol();
 			}
 			else
 			{
-				character.SetTarget(null);
-			}
-		}
-
-		private void UpdateAttackState(float distanceToPlayer)
-		{
-			var currentlyAttacking = weaponSystem.CurrentlyAttacking;
-			var playerAliveAndInRange = player.Health.Alive && distanceToPlayer <= currentWeaponRange;
-			var PlayerOutofRangeAndEnemyAttacking = distanceToPlayer > currentWeaponRange && currentlyAttacking;
-
-			if (playerAliveAndInRange && !currentlyAttacking)
-			{
-				weaponSystem.StartAttacking(player.Health);
-			}
-			else if (!player.Health.Alive && currentlyAttacking || PlayerOutofRangeAndEnemyAttacking)
-			{
-				weaponSystem.StopAttacking();
+				state = States.Idle;
+				character.SetTarget(originalPosition);
 			}
 		}
 

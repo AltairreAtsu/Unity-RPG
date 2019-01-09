@@ -21616,6 +21616,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114504192560653464, guid: a10503e44e7b540419e7cbab372424d7,
+        type: 3}
+      propertyPath: patrolPath
+      value: 
+      objectReference: {fileID: 1732214068}
+    - target: {fileID: 2222753495891515733, guid: a10503e44e7b540419e7cbab372424d7,
+        type: 3}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a10503e44e7b540419e7cbab372424d7, type: 3}
 --- !u!1 &1341052465
@@ -25450,6 +25460,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1628688796}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1639637392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639637393}
+  m_Layer: 0
+  m_Name: Patrol Paths
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1639637393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639637392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1732214069}
+  m_Father: {fileID: 2107577036}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1646957445
 GameObject:
   m_ObjectHideFlags: 0
@@ -26968,6 +27009,60 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711444741}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1732214067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1732214069}
+  - component: {fileID: 1732214068}
+  m_Layer: 0
+  m_Name: Patrol Path 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1732214068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732214067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a8e6ca6022e924bb9bb7b8f9b98348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathIsRingLoop: 0
+  precesionThreshold: 1.6
+  waypoints:
+  - point: {x: -0.47138405, y: 0, z: -2.3482676}
+    pause: 5
+  - point: {x: 0.5464978, y: 0, z: 3.5427573}
+    pause: 5
+  - point: {x: 5.8964734, y: 0, z: 0.7679691}
+    pause: 10
+  - point: {x: 6.469632, y: 0, z: -2.746286}
+    pause: 5
+--- !u!4 &1732214069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732214067}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.33, y: -0.93591785, z: 0.17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1639637393}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1734132993
 GameObject:
   m_ObjectHideFlags: 0
@@ -28130,15 +28225,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4554015776454862, guid: 44db225828f96b441898e991c998ce82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.8997416
+      value: -1.9
       objectReference: {fileID: 0}
     - target: {fileID: 4554015776454862, guid: 44db225828f96b441898e991c998ce82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.346
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 4554015776454862, guid: 44db225828f96b441898e991c998ce82, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.7781461
+      value: -1.36
       objectReference: {fileID: 0}
     - target: {fileID: 4554015776454862, guid: 44db225828f96b441898e991c998ce82, type: 3}
       propertyPath: m_LocalRotation.x
@@ -31138,6 +31233,7 @@ Transform:
   - {fileID: 1588070043}
   - {fileID: 1177382259}
   - {fileID: 701102194}
+  - {fileID: 1639637393}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

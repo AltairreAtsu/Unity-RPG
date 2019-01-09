@@ -91,7 +91,7 @@ MonoBehaviour:
   height: 1.6
   movingTurnSpeed: 360
   stationaryTurnSpeed: 180
-  moveSpeedMultiplier: 1
+  moveSpeedMultiplier: 0.8
   animationSpeedMultiplier: 1
   speed: 3.5
   angularSpeed: 120
@@ -148,11 +148,6 @@ MonoBehaviour:
   criticalHitMultiplier: 3
   criticalHitVFX: {fileID: 4520447110877948107, guid: 91cb72f5914eacc43ab0b83c29915f6b,
     type: 3}
-  delayBetweenShots: 0.5
-  damagePerShot: 5
-  projectileSocket: {fileID: 0}
-  projectileToUse: {fileID: 0}
-  aimOffset: {x: 0, y: 1, z: 0}
 --- !u!1 &1695883334865286
 GameObject:
   m_ObjectHideFlags: 0
