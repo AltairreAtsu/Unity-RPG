@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5dca84f4fb7fd4aada2c2ed0a61109, type: 3}
   m_Name: Self Heal
   m_EditorClassIdentifier: 
-  key: 50
   energyCost: 33
   compoundParticleSystem: {fileID: 3132192358645548463, guid: 9a9f722c97d61784c9d27ca585960017,
     type: 3}
-  soundClip: {fileID: 8300000, guid: beefc1da43c09014dba69990a37fe019, type: 3}
+  abilityAnimation: {fileID: 7400000, guid: e3475f5d6385bc94f9627c87754e93e9, type: 3}
   healAmount: 50

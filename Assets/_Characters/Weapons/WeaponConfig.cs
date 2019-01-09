@@ -14,8 +14,11 @@ namespace RPG.Weapons {
 		[SerializeField] private AnimationClip[] attackAnimations = null;
 		[SerializeField] private float weaponDamage = 1f;
 		[SerializeField] private float attackCooldown = 1f;
+		[SerializeField] private float dealDamageDelay = 0.5f;
 		[SerializeField] private float attackRange = 3f;
 		[SerializeField] private float attackSpeedMultiplier = 1f;
+
+		public float DamageDelay { get { return dealDamageDelay;} }
 
 		public Transform getWeaponGrip()
 		{

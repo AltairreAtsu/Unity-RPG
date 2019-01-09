@@ -10,9 +10,14 @@ namespace RPG.Characters
 	{
 		private Character character;
 		private CameraRaycaster cameraRaycaster;
+		private EnemyAI currentTarget;
 		private Player player;
 		private SpecialAbilities specialAbilities;
 		private Transform currentWalkTarget;
+
+		private Coroutine movementCoroutine;
+
+		private delegate void MovementCallback();
 
 		private void Start()
 		{
@@ -73,7 +78,12 @@ namespace RPG.Characters
 			{
 				if (!player.WeaponSystem.IsInRange(enemy.transform.position))
 				{
-					character.SetTarget(enemy.transform);
+					
+					if(movementCoroutine == null)
+					{
+						currentTarget = enemy;
+						StartCoroutine(MoveInRange(enemy.transform, () => MoveToAttackEnemyCallback()));
+					}
 				}
 				else
 				{
@@ -83,7 +93,44 @@ namespace RPG.Characters
 			}
 			if (Input.GetMouseButtonDown(1))
 			{
-				specialAbilities.TryPerformPowerAttack(enemy.Health);
+				if (movementCoroutine == null)
+				{
+					currentTarget = enemy;
+					StartCoroutine(MoveInRange(enemy.transform, () => MoveToPowerAttackEnemyCallback()));
+				}
+				else
+				{
+					specialAbilities.TryPerformPowerAttack(enemy.Health);
+				}
+			}
+		}
+
+		private void MoveToAttackEnemyCallback()
+		{
+			if (currentTarget != null && currentTarget.Health.Alive)
+			{
+				player.WeaponSystem.TryAttack(currentTarget.Health);
+			}
+		}
+		private void MoveToPowerAttackEnemyCallback()
+		{
+			if (currentTarget != null && currentTarget.Health.Alive)
+			{
+				specialAbilities.TryPerformPowerAttack(currentTarget.Health);
+			}
+		}
+
+		private IEnumerator MoveInRange(Transform target, MovementCallback callback)
+		{
+			character.SetTarget(target);
+			while (true)
+			{
+				if (player.WeaponSystem.IsInRange(target.position))
+				{
+					callback();
+					yield break;
+				}
+				yield return new WaitForEndOfFrame();
 			}
 		}
 	}

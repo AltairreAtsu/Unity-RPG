@@ -100,17 +100,23 @@ namespace RPG.Weapons
 
 			if (CanAttack(health.transform.position))
 			{
-				Attack(health, health.gameObject);
+				DoAttack(health, health.gameObject);
 			}
 		}
 
-		private void Attack(Health target, GameObject targetObject)
+		private void DoAttack(Health target, GameObject targetObject)
 		{
 			transform.LookAt(targetObject.transform);
 			animator.SetTrigger("Attack");
-			target.TakeDamage(CalculateDamage());
+			StartCoroutine(DealDamage(target));
 			lastDamageTime = Time.time;
 			animatorOverrideController["DEFUALT_ATTACK"] = heldWeapon.GetAnimation();
+		}
+
+		private IEnumerator DealDamage(Health target)
+		{
+			yield return new WaitForSeconds(heldWeapon.DamageDelay);
+			target.TakeDamage(CalculateDamage());
 		}
 
 
