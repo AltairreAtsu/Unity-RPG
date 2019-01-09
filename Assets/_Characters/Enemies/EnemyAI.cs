@@ -10,6 +10,7 @@ namespace RPG.Characters {
 	{
 		[Header("Chase Settings")]
 		[SerializeField] private float chaseRadius = 20f;
+		[SerializeField][Range(0f, 1f)] private float patrolMovementMulti = 0.5f;
 		[SerializeField] private WaypointPath patrolPath;
 
 		enum States { Idle, Patroling, Chasing, Attacking }
@@ -73,6 +74,7 @@ namespace RPG.Characters {
 					StopCoroutine(patrolCoroutine);
 					patrolCoroutine = null;
 				}
+				character.AnimatorForwardMultiplier = 1f;
 				state = States.Chasing;
 				character.SetTarget(player.transform);
 				return;
@@ -106,6 +108,7 @@ namespace RPG.Characters {
 		{
 			if (patrolCoroutine == null)
 			{
+				character.AnimatorForwardMultiplier = patrolMovementMulti;
 				patrolCoroutine = StartCoroutine(DoPatrol());
 			}
 		}

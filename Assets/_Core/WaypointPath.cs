@@ -6,14 +6,15 @@ public class WaypointPath : MonoBehaviour
 {
 	[SerializeField] public bool pathIsRingLoop;
 	[SerializeField] private float precesionThreshold = 1.6f;
-	[SerializeField] public Waypoint[] waypoints;
+
+	[HideInInspector] public List<Waypoint> waypoints;
 
 	private const float DEBUG_SPHERE_RADIUS = .3f;
 
 	public Vector3 GetNextWaypoint(WaypointIterator iterator)
 	{
 		var atArrayStart = iterator.index == 0;
-		var atEndOfArray = iterator.index == waypoints.Length - 1;
+		var atEndOfArray = iterator.index == waypoints.Count - 1;
 
 		if (pathIsRingLoop && atEndOfArray)
 		{
@@ -61,21 +62,23 @@ public class WaypointPath : MonoBehaviour
 		return waypoints[0].point + transform.position;
 	}
 
-	private void OnDrawGizmos()
+	public void OnDrawGizmos()
 	{
 		Gizmos.color = Color.yellow;
 		
-		for (int i = 0; i < waypoints.Length; i++)
+		for (int i = 0; i < waypoints.Count; i++)
 		{
+			if (i == 0) Gizmos.color = Color.blue;
 			Gizmos.DrawSphere(waypoints[i].point + transform.position, DEBUG_SPHERE_RADIUS);
-			if(i > 0)
+			Gizmos.color = Color.yellow;
+			if (i > 0)
 			{
 				Gizmos.DrawLine(waypoints[i - 1].point + transform.position, waypoints[i].point + transform.position);
 			}
 		}
 		if (pathIsRingLoop)
 		{
-			Gizmos.DrawLine(waypoints[0].point, waypoints[waypoints.Length - 1].point);
+			Gizmos.DrawLine(waypoints[0].point, waypoints[waypoints.Count - 1].point);
 		}
 	}
 }
@@ -85,6 +88,11 @@ public struct Waypoint
 {
 	[SerializeField] public Vector3 point;
 	[SerializeField] public float pause;
+
+	public void SetPoint(Vector3 point)
+	{
+		this.point = point;
+	}
 }
 
 public class WaypointIterator

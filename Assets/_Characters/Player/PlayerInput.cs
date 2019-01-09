@@ -54,12 +54,12 @@ namespace RPG.Characters
 			{
 				if (Input.GetKeyDown(i.ToString())) 
 				{
-					specialAbilities.TryPerformSpecialAbility(i-1);
+					specialAbilities.TryPerformSpecialAbility(i);
 				}
 			}
 			if (Input.GetKeyDown("0"))
 			{
-				specialAbilities.TryPerformSpecialAbility(9);
+				specialAbilities.TryPerformSpecialAbility(10);
 			}
 		}
 

@@ -49,6 +49,8 @@ namespace RPG.Characters
 		float forwardAmount;
 		float turnAmount;
 
+		public float AnimatorForwardMultiplier { get; set; }
+
 		public AnimatorOverrideController OverrideAnimator { get { return overrideController; } }
 
 		private void Awake()
@@ -68,6 +70,7 @@ namespace RPG.Characters
 				animator.runtimeAnimatorController = controller;
 			}
 			animator.avatar = avatar;
+			AnimatorForwardMultiplier = 1f;
 
 			var audioSource = gameObject.AddComponent<AudioSource>();
 			audioSource.mute = mute;
@@ -147,7 +150,7 @@ namespace RPG.Characters
 			}
 			var localMovement = transform.InverseTransformDirection(movement);
 			turnAmount = Mathf.Atan2(localMovement.x, localMovement.z);
-			forwardAmount = localMovement.z;
+			forwardAmount = localMovement.z * AnimatorForwardMultiplier;
 		}
 
 		void UpdateAnimator(Vector3 move)
