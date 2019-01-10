@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class WaypointPath : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class WaypointPath : MonoBehaviour
 	[HideInInspector] public List<Waypoint> waypoints;
 
 	private const float DEBUG_SPHERE_RADIUS = .3f;
+	private Vector3 LABEL_VECTOR = new Vector3(0.5f, 0.5f, 0);
 
 	public Vector3 GetNextWaypoint(WaypointIterator iterator)
 	{
@@ -64,22 +66,25 @@ public class WaypointPath : MonoBehaviour
 
 	public void OnDrawGizmos()
 	{
+		Gizmos.color = Color.blue;
+		DrawWaypoint(waypoints[0].point, 0);
 		Gizmos.color = Color.yellow;
-		
-		for (int i = 0; i < waypoints.Count; i++)
+
+		for (int i = 1; i < waypoints.Count; i++)
 		{
-			if (i == 0) Gizmos.color = Color.blue;
-			Gizmos.DrawSphere(waypoints[i].point + transform.position, DEBUG_SPHERE_RADIUS);
-			Gizmos.color = Color.yellow;
-			if (i > 0)
-			{
-				DrawArrow(waypoints[i - 1].point + transform.position, waypoints[i].point + transform.position);
-			}
+			DrawWaypoint(waypoints[i].point, i);
+			DrawArrow(waypoints[i - 1].point + transform.position, waypoints[i].point + transform.position);
 		}
 		if (pathIsRingLoop)
 		{
-			Gizmos.DrawLine(waypoints[0].point, waypoints[waypoints.Count - 1].point);
+			DrawArrow(waypoints[0].point, waypoints[waypoints.Count - 1].point);
 		}
+	}
+
+	private void DrawWaypoint(Vector3 point, int i)
+	{
+		Gizmos.DrawSphere(waypoints[i].point + transform.position, DEBUG_SPHERE_RADIUS);
+		Handles.Label(waypoints[i].point + transform.position + LABEL_VECTOR, "Waypoint: " + i);
 	}
 
 	private void DrawArrow(Vector3 start, Vector3 end)
