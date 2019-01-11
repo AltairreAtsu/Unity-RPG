@@ -57,9 +57,9 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a7312fc2255228a44a9649550fa4a93c, type: 3}
-  - {fileID: 2100002, guid: a7312fc2255228a44a9649550fa4a93c, type: 3}
-  - {fileID: 2100004, guid: a7312fc2255228a44a9649550fa4a93c, type: 3}
+  - {fileID: 2100000, guid: 247831826950a064db1b20746fc3353a, type: 2}
+  - {fileID: 2100000, guid: 63dd28ce319a49440a3cc1a6167fdf10, type: 2}
+  - {fileID: 2100000, guid: 8d29004883df19f40bf2640cbe35ea8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4933164419250828}
   m_Layer: 0
-  m_Name: Sword
+  m_Name: Sword Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

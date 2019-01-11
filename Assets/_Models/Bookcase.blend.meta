@@ -73,7 +73,7 @@ ModelImporter:
       name: Wood_Heighlight
     second: {fileID: 2100000, guid: 610a01ba201873545b44783f5227635f, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

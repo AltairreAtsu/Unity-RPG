@@ -30,7 +30,7 @@ ModelImporter:
       name: Metal
     second: {fileID: 2100000, guid: b27e16185ff079f4e9d7590076c3075d, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1

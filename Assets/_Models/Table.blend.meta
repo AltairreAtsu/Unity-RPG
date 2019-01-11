@@ -7,21 +7,31 @@ ModelImporter:
     100002: Table
     100004: Table_Stands
     100006: Table_Support_Beam
+    100008: Table_Base
+    100010: Table_Strut
     400000: //RootNode
     400002: Table
     400004: Table_Stands
     400006: Table_Support_Beam
+    400008: Table_Base
+    400010: Table_Strut
     2100000: Wood
     2100002: Metal
     2300000: Table
     2300002: Table_Stands
     2300004: Table_Support_Beam
+    2300006: Table_Base
+    2300008: Table_Strut
     3300000: Table
     3300002: Table_Stands
     3300004: Table_Support_Beam
+    3300006: Table_Base
+    3300008: Table_Strut
     4300000: Table_Support_Beam
     4300002: Table_Stands
     4300004: Table
+    4300006: Table_Base
+    4300008: Table_Strut
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
@@ -36,7 +46,7 @@ ModelImporter:
       name: Wood
     second: {fileID: 2100000, guid: 4859eb37748c83d48bbd345be952d545, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
