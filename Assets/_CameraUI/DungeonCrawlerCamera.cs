@@ -8,6 +8,7 @@ namespace RPG.CameraUI
 		[SerializeField] private Transform target = null;
 
 		[SerializeField] private float dampening = 1f;
+		[SerializeField] private float orbitSpeed = 0.3f;
 
 		[SerializeField] private bool alwaysLookAtPlayer = false;
 		[SerializeField] private bool useDamping = true;

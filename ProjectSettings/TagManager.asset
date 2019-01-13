@@ -16,7 +16,7 @@ TagManager:
   - 
   - PostProcessing
   - ClickToWalk
-  - 
+  - Wall
   - Player
   - EnemyProjectile
   - 
